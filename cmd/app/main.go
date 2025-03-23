@@ -3,9 +3,9 @@ package main
 import (
 	"akira/internal/config/env"
 	"akira/internal/db"
+	"akira/internal/locale"
 	"akira/internal/server"
 	"akira/internal/usecase/i18n"
-	"akira/internal/usecase/i18n/locale"
 	"akira/internal/usecase/logger"
 	"akira/internal/usecase/session"
 	"akira/internal/usecase/theme"
