@@ -1,9 +1,12 @@
 package page
 
-import "akira/internal/view/layout"
+import (
+	"akira/internal/view/layout"
+	"akira/internal/view/i18n/t"
+)
 
 templ Index() {
 	@layout.Page("Home") {
-		<h1 class="text-4xl font-bold">Hello World</h1>
+		<h1 class="text-4xl font-bold">@t.T("index.hello_world")</h1>
 	}
 }

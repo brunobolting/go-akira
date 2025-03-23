@@ -26,6 +26,7 @@ type Handler struct {
 	user    entity.UserService
 	session entity.SessionService
 	logger  entity.Logger
+	i18n	entity.I18nService
 }
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -73,6 +74,7 @@ func NewHandler(
 	user entity.UserService,
 	session entity.SessionService,
 	logger entity.Logger,
+	i18n entity.I18nService,
 	opts Options,
 ) *Handler {
 	h := &Handler{
@@ -81,10 +83,12 @@ func NewHandler(
 		user:    user,
 		session: session,
 		logger:  logger,
+		i18n:    i18n,
 	}
 	h.r.Use(chi_middleware.Logger)
 	h.r.Use(chi_middleware.RequestID, chi_middleware.Recoverer)
 	h.r.Use(h.session.SetSessionMiddleware)
+	h.r.Use(h.i18n.SetLocaleMiddleware)
 	h.r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   opts.AllowedOrigins,
 		AllowedMethods:   []string{"GET", "PUT", "POST", "DELETE", "HEAD", "OPTION"},
@@ -100,4 +104,5 @@ func NewHandler(
 func (h *Handler) MakeRoutes() {
 	h.r.Get("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))).ServeHTTP)
 	h.r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
+	h.r.Get("/auth/signin", MakeHandler(h.handleSignInPage, h.logger))
 }

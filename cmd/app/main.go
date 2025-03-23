@@ -4,6 +4,8 @@ import (
 	"akira/internal/config/env"
 	"akira/internal/db"
 	"akira/internal/server"
+	"akira/internal/usecase/i18n"
+	"akira/internal/usecase/i18n/locale"
 	"akira/internal/usecase/logger"
 	"akira/internal/usecase/session"
 	"akira/internal/usecase/user"
@@ -16,6 +18,7 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/invopop/ctxi18n"
 )
 
 func main() {
@@ -46,10 +49,15 @@ func run(ctx context.Context) error {
 		return err
 	}
 	defer sqlite.Close()
+	if err := ctxi18n.LoadWithDefault(locale.Content, "en"); err != nil {
+		logger.Error(ctx, "failed to load i18n translations", err, nil)
+		return err
+	}
 	userService, _ := user.Make(ctx, sqlite, logger)
 	sessionService, _ := session.Make(ctx, sqlite, logger)
+	i18n := i18n.Make(ctx, logger)
 	app := chi.NewRouter()
-	web := web.NewHandler(app, userService, sessionService, logger, web.Options{
+	web := web.NewHandler(app, userService, sessionService, logger, i18n, web.Options{
 		AllowedOrigins: []string{"same-origin"},
 	})
 	s := server.NewServer(ctx, "", env.PORT, web, logger)
