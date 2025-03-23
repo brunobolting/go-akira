@@ -5,6 +5,7 @@ import (
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
 	"akira/internal/view/layout"
+	"akira/internal/view/component/field"
 )
 
 templ SignUp() {
@@ -29,22 +30,13 @@ templ SignUp() {
 					</div>
 					<div class="card-body gap-4 pt-1">
 						<div class="flex flex-col gap-1">
-							<label class="input input-border validator flex w-full items-center gap-2">
-								@icon.User()
-								<input type="text" class="grow" required minlength="3" placeholder={ t.TS(ctx, "common.name") }/>
-							</label>
+							@field.Name()
 						</div>
 						<div class="flex flex-col gap-1">
-							<label class="input input-border validator flex w-full items-center gap-2">
-								@icon.Mail()
-								<input type="email" class="grow" required placeholder={ t.TS(ctx, "common.email") }/>
-							</label>
+							@field.Email()
 						</div>
 						<div class="flex flex-col gap-1">
-							<label class="input input-border validator flex w-full items-center gap-2">
-								@icon.Key()
-								<input type="password" class="grow" required minlength="8" placeholder={ t.TS(ctx, "common.password") }/>
-							</label>
+							@field.Password()
 							<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
 								<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
 							</span>
