@@ -14,12 +14,22 @@ templ LocaleSwitcher() {
 		</div>
 		<ul tabIndex="0" class="dropdown-content z-[1] menu p-1 shadow bg-base-100 rounded w-24">
 			<li>
-				<button class="text-xs p-1">
+				<button
+					class="text-xs p-1"
+					hx-post="/api/change-locale"
+					hx-swap="none"
+					hx-vals='{"locale": "pt-BR"}'
+				>
 					<span class="text-sm">🇧🇷 { t.TS(ctx, "locale.brazilian") }</span>
 				</button>
 			</li>
 			<li>
-				<button class="text-xs p-1">
+				<button
+					class="text-xs p-1"
+					hx-post="/api/change-locale"
+					hx-swap="none"
+					hx-vals='{"locale": "en"}'
+				>
 					<span class="text-sm">🇺🇸 { t.TS(ctx, "locale.english") }</span>
 				</button>
 			</li>

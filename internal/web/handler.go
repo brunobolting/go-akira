@@ -72,15 +72,18 @@ func HxRedirect(w http.ResponseWriter, r *http.Request, url string) error {
 }
 
 func HxTrigger(w http.ResponseWriter, event string, data map[string]string) error {
-	payload := map[string]map[string]string{
-		event: data,
-	}
-	eventData, err := json.Marshal(payload)
+	payload, err := json.Marshal(data)
 	if err != nil {
-		w.Header().Set("HX-Trigger", event)
-	} else {
-		w.Header().Set("HX-Trigger", string(eventData))
+		return err
 	}
+	w.Header().Set("HX-Trigger", event)
+	w.Header().Set("HX-Trigger-Content-Type", "application/json")
+	w.Write(payload)
+	return nil
+}
+
+func HxRefresh(w http.ResponseWriter) error {
+	w.Header().Set("HX-Refresh", "true")
 	w.WriteHeader(http.StatusOK)
 	return nil
 }
@@ -130,5 +133,6 @@ func (h *Handler) MakeRoutes() {
 	h.r.Get("/auth/signin", MakeHandler(h.handleSignInPage, h.logger))
 	h.r.Route("/api", func(r chi.Router) {
 		r.Post("/change-theme", MakeHandler(h.handleChangeTheme, h.logger))
+		r.Post("/change-locale", MakeHandler(h.handleChangeLocale, h.logger))
 	})
 }

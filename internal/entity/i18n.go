@@ -15,3 +15,19 @@ type I18nService interface {
 	SetLocaleMiddleware(next http.Handler) http.Handler
 	SetLocaleCookie(w http.ResponseWriter, locale string)
 }
+
+func IsValidLocale(lang string) bool {
+	for _, l := range GetLanguages() {
+		if string(l) == lang {
+			return true
+		}
+	}
+	return false
+}
+
+func GetLanguages() []Locale {
+	return []Locale{
+		LocaleEN,
+		LocaleBR,
+	}
+}
