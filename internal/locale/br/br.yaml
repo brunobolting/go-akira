@@ -10,7 +10,7 @@ pt-BR:
     signup-to-continue: Inscreva-se para continuar
     register: Registrar
     or-signin: Ou entrar
-    password-must-be: A senha deve ter %d+ caracteres
+    password-must-be: A senha deve ter mais de %d caracteres
 
   common:
     name: Nome

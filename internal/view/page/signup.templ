@@ -29,21 +29,21 @@ templ SignUp() {
 					</div>
 					<div class="card-body gap-4 pt-1">
 						<div class="flex flex-col gap-1">
-							<label class="input input-border flex w-full items-center gap-2">
+							<label class="input input-border validator flex w-full items-center gap-2">
 								@icon.User()
-								<input type="text" class="grow" placeholder={ t.TS(ctx, "common.name") }/>
+								<input type="text" class="grow" required minlength="3" placeholder={ t.TS(ctx, "common.name") }/>
 							</label>
 						</div>
 						<div class="flex flex-col gap-1">
-							<label class="input input-border flex  w-full items-center gap-2">
+							<label class="input input-border validator flex w-full items-center gap-2">
 								@icon.Mail()
-								<input type="email" class="grow" placeholder={ t.TS(ctx, "common.email") }/>
+								<input type="email" class="grow" required placeholder={ t.TS(ctx, "common.email") }/>
 							</label>
 						</div>
 						<div class="flex flex-col gap-1">
-							<label class="input input-border flex  w-full items-center gap-2">
+							<label class="input input-border validator flex w-full items-center gap-2">
 								@icon.Key()
-								<input type="password" class="grow" placeholder={ t.TS(ctx, "common.password") }/>
+								<input type="password" class="grow" required minlength="8" placeholder={ t.TS(ctx, "common.password") }/>
 							</label>
 							<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
 								<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)

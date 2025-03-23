@@ -10,7 +10,7 @@ en:
     signup-to-continue: Sign up to continue
     register: Register
     or-signin: Or sign in
-    password-must-be: Password must be %d+ characters
+    password-must-be: Password must be more than %d characters
 
   common:
     name: Name
