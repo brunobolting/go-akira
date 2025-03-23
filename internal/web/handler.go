@@ -26,7 +26,8 @@ type Handler struct {
 	user    entity.UserService
 	session entity.SessionService
 	logger  entity.Logger
-	i18n	entity.I18nService
+	i18n    entity.I18nService
+	theme   entity.ThemeService
 }
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -75,6 +76,7 @@ func NewHandler(
 	session entity.SessionService,
 	logger entity.Logger,
 	i18n entity.I18nService,
+	theme entity.ThemeService,
 	opts Options,
 ) *Handler {
 	h := &Handler{
@@ -84,11 +86,13 @@ func NewHandler(
 		session: session,
 		logger:  logger,
 		i18n:    i18n,
+		theme:   theme,
 	}
 	h.r.Use(chi_middleware.Logger)
 	h.r.Use(chi_middleware.RequestID, chi_middleware.Recoverer)
 	h.r.Use(h.session.SetSessionMiddleware)
 	h.r.Use(h.i18n.SetLocaleMiddleware)
+	h.r.Use(h.theme.SetThemeMiddleware)
 	h.r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   opts.AllowedOrigins,
 		AllowedMethods:   []string{"GET", "PUT", "POST", "DELETE", "HEAD", "OPTION"},

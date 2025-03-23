@@ -1,0 +1,13 @@
+package theme
+
+import (
+	"akira/internal/entity"
+	"context"
+)
+
+templ Theme() {
+}
+
+func PreferredTheme(ctx context.Context) string {
+	return ctx.Value(entity.COOKIE_THEME_NAME).(string)
+}

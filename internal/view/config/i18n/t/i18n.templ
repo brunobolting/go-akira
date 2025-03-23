@@ -1,6 +1,9 @@
 package t
 
-import "github.com/invopop/ctxi18n/i18n"
+import (
+	"context"
+	"github.com/invopop/ctxi18n/i18n"
+)
 
 templ T(key string, args ...any) {
 	{ i18n.T(ctx, key, args...) }
@@ -8,4 +11,8 @@ templ T(key string, args ...any) {
 
 templ N(key string, n int, args ...any) {
 	{ i18n.N(ctx, key, n, args...) }
+}
+
+func PreferredLocale(ctx context.Context) string {
+	return i18n.GetLocale(ctx).Code().String()
 }

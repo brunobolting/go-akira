@@ -1,8 +1,11 @@
 package layout
 
+import "akira/internal/view/config/i18n/t"
+import "akira/internal/view/config/theme"
+
 templ header(title string) {
 	<head>
-		<title>{ title }</title>
+		<title>Akira - { title }</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="stylesheet" href="static/css/style.css"/>
@@ -10,9 +13,9 @@ templ header(title string) {
 }
 
 templ Layout(title string) {
-	<html data-theme="dim">
+	<html lang={t.PreferredLocale(ctx)} data-theme={theme.PreferredTheme(ctx)}>
 		@header(title)
-		<body class="bg-zinc-950 text-zinc-50 antialiased">
+		<body class="antialiased">
 			<div class="">
 				{ children... }
 			</div>
