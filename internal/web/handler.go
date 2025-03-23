@@ -3,6 +3,7 @@ package web
 import (
 	"akira/internal/entity"
 	"akira/internal/view/component"
+	"encoding/json"
 	"net/http"
 	"sync"
 
@@ -70,6 +71,20 @@ func HxRedirect(w http.ResponseWriter, r *http.Request, url string) error {
 	return nil
 }
 
+func HxTrigger(w http.ResponseWriter, event string, data map[string]string) error {
+	payload := map[string]map[string]string{
+		event: data,
+	}
+	eventData, err := json.Marshal(payload)
+	if err != nil {
+		w.Header().Set("HX-Trigger", event)
+	} else {
+		w.Header().Set("HX-Trigger", string(eventData))
+	}
+	w.WriteHeader(http.StatusOK)
+	return nil
+}
+
 func NewHandler(
 	r *chi.Mux,
 	user entity.UserService,
@@ -113,4 +128,7 @@ func (h *Handler) MakeRoutes() {
 	h.r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
 	h.r.Get("/auth/signup", MakeHandler(h.handleSignUpPage, h.logger))
 	h.r.Get("/auth/signin", MakeHandler(h.handleSignInPage, h.logger))
+	h.r.Route("/api", func(r chi.Router) {
+		r.Post("/change-theme", MakeHandler(h.handleChangeTheme, h.logger))
+	})
 }

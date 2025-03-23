@@ -27,9 +27,9 @@ en:
     all-rights-reserved: All rights reserved.
 
   locale:
-    change-language: Change language
+    change-language: Language
     english: English
     brazilian: Brazilian
 
   theme:
-    change-theme: Change theme
+    change-theme: Theme

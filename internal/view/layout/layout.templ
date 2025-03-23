@@ -1,7 +1,9 @@
 package layout
 
-import "akira/internal/view/config/i18n/t"
-import "akira/internal/view/config/theme"
+import (
+	"akira/internal/view/config/i18n/t"
+	"akira/internal/view/config/theme"
+)
 
 templ header(title string) {
 	<head>
@@ -13,9 +15,9 @@ templ header(title string) {
 }
 
 templ Layout(title string) {
-	<html lang={t.PreferredLocale(ctx)} data-theme={theme.PreferredTheme(ctx)}>
+	<html lang={ t.PreferredLocale(ctx) } data-theme={ theme.PreferredTheme(ctx) }>
 		@header(title)
-		<body class="antialiased">
+		<body class="antialiased transition-colors duration-300">
 			<div class="">
 				{ children... }
 			</div>

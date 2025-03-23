@@ -19,13 +19,13 @@ func NewService(ctx context.Context, logger entity.Logger) *Service {
 
 func (s *Service) SetThemeMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		theme := string(entity.ThemeDim)
+		theme := string(entity.ThemeDefault)
 		cookie, err := r.Cookie(entity.COOKIE_THEME_NAME)
 		if err == nil && cookie != nil && cookie.Value != "" {
 			theme = cookie.Value
 		}
-		if !isValidTheme(theme) {
-			theme = string(entity.ThemeDim)
+		if !entity.IsValidTheme(theme) {
+			theme = string(entity.ThemeDefault)
 		}
 		s.SetThemeCookie(w, theme)
 		ctx := context.WithValue(r.Context(), entity.COOKIE_THEME_NAME, theme)
@@ -43,14 +43,4 @@ func (s *Service) SetThemeCookie(w http.ResponseWriter, theme string) {
 		SameSite: http.SameSiteLaxMode,
 	}
 	http.SetCookie(w, cookie)
-}
-
-func isValidTheme(theme string) bool {
-	supportedThemes := map[string]bool{
-		string(entity.ThemeLight):   true,
-		string(entity.ThemeDark):    true,
-		string(entity.ThemeDim):     true,
-		string(entity.ThemeCupcake): true,
-	}
-	return supportedThemes[theme]
 }

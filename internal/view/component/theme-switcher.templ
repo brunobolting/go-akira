@@ -3,21 +3,8 @@ package component
 import (
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
+	"akira/internal/entity"
 )
-
-type Theme struct {
-	Name  string
-	Value string
-}
-
-func getSupportedThemes() []Theme {
-	return []Theme{
-		{Name: "Light", Value: "light"},
-		{Name: "Dark", Value: "dark"},
-		{Name: "Dim", Value: "dim"},
-		{Name: "Cupcake", Value: "cupcake"},
-	}
-}
 
 templ ThemeSwitcher() {
 	<div class="dropdown dropdown-top dropdown-center lg:tooltip" aria-label={ t.TS(ctx, "theme.change-theme") } data-tip={ t.TS(ctx, "theme.change-theme") }>
@@ -27,13 +14,28 @@ templ ThemeSwitcher() {
 			</span>
 		</div>
 		<ul tabIndex="0" class="dropdown-content z-[1] menu p-1 shadow bg-base-100 rounded w-24">
-			for _, theme := range getSupportedThemes() {
+			for _, theme := range entity.GetThemes() {
 				<li>
-					<button class="text-xs p-1">
+					<button
+						class="text-xs p-1"
+						onclick={ templ.JSFuncCall("updateTheme", theme.Value) }
+					>
 						<span class="text-sm">{ theme.Name }</span>
 					</button>
 				</li>
 			}
 		</ul>
 	</div>
+	<script>
+        function updateTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            fetch('/api/change-theme', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'theme=' + theme
+            });
+        }
+    </script>
 }
