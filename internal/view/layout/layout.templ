@@ -8,7 +8,7 @@ templ header(title string) {
 		<title>Akira - { title }</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<link rel="stylesheet" href="static/css/style.css"/>
+		<link rel="stylesheet" href="/static/css/style.css"/>
 	</head>
 }
 
@@ -19,9 +19,9 @@ templ Layout(title string) {
 			<div class="">
 				{ children... }
 			</div>
-			<script src="static/htmx/htmx@2.0.4.min.js"></script>
-			<script src="static/htmx/ext/ws@2.0.1.js"></script>
-			<script src="static/htmx/ext/json-enc@2.0.1.js"></script>
+			<script src="/static/htmx/htmx@2.0.4.min.js"></script>
+			<script src="/static/htmx/ext/ws@2.0.1.js"></script>
+			<script src="/static/htmx/ext/json-enc@2.0.1.js"></script>
 		</body>
 	</html>
 }

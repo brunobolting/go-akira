@@ -1,3 +1,32 @@
 pt-BR:
   index:
     hello-world: Olá Mundo!
+
+  signin:
+    signin-to-continue: Faça login para continuar
+
+  signup:
+    create-new-account: Crie uma nova conta
+    signup-to-continue: Inscreva-se para continuar
+    register: Registrar
+    or-signin: Ou entrar
+    password-must-be: A senha deve ter %d+ caracteres
+
+  common:
+    name: Nome
+    email: E-mail
+    password: Senha
+
+  footer:
+    terms-of-service: Termos de serviço
+    privacy-policy: Política de privacidade
+    help: Ajuda
+    all-rights-reserved: Todos os direitos reservados.
+
+  locale:
+    change-language: Alterar idioma
+    english: Inglês
+    brazilian: Brasileiro
+
+  theme:
+    change-theme: Alterar tema

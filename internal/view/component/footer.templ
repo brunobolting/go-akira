@@ -1,0 +1,36 @@
+package component
+
+import (
+	"akira/internal/view/config/i18n/t"
+	"fmt"
+	"time"
+)
+
+templ Footer() {
+	<footer class="bg-base-100 py-6 text-center shadow-inner">
+		<div class="container mx-auto px-4">
+			<div class="flex flex-col items-center justify-center gap-4">
+				// <div class="flex items-center gap-2">
+				// <Logo class="text-3xl transition-colors duration-300" />
+				// </div>
+				<div class="flex gap-6 text-xs text-base-content/60 items-center">
+					<a href="#" class="hover:text-primary transition-colors">
+						@t.T("footer.terms-of-service")
+					</a>
+					<a href="#" class="hover:text-primary transition-colors">
+						@t.T("footer.privacy-policy")
+					</a>
+					<a href="#" class="hover:text-primary transition-colors">
+						@t.T("footer.help")
+					</a>
+					@LocaleSwitcher()
+					@ThemeSwitcher()
+				</div>
+				<div class="text-xs text-base-content/50">
+					© Akira. { fmt.Sprintf("%d", time.Now().Year()) }.
+					<a href="https://github.com/brunobolting/go-akira" target="_blank">🌻</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+}

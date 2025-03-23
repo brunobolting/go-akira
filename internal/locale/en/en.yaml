@@ -1,3 +1,33 @@
 en:
   index:
     hello-world: Hello World!
+
+  signin:
+    signin-to-continue: Sign in to continue
+
+  signup:
+    create-new-account: Create new account
+    signup-to-continue: Sign up to continue
+    register: Register
+    or-signin: Or sign in
+    password-must-be: Password must be %d+ characters
+
+  common:
+    name: Name
+    email: E-mail
+    password: Password
+
+  footer:
+    terms-of-service: Terms of service
+    privacy-policy: Privacy policy
+    help: Help
+    all-rights-reserved: All rights reserved.
+
+  locale:
+    change-language: Change language
+    english: English
+    brazilian: Brazilian
+
+
+  theme:
+    change-theme: Change theme

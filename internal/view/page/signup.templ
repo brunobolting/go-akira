@@ -1,0 +1,66 @@
+package page
+
+import (
+	"akira/internal/view/component"
+	"akira/internal/view/component/icon"
+	"akira/internal/view/config/i18n/t"
+	"akira/internal/view/layout"
+)
+
+templ SignUp() {
+	@layout.Layout("SignUp") {
+		<div class="flex flex-col min-h-screen">
+			<div class="flex-grow flex items-center justify-center bg-base-200">
+				<div class="card w-96 bg-base-100 shadow-xl">
+					<div class="border-base-300 border-b border-dashed">
+						<div class="flex items-center gap-2 p-4">
+							<div class="grow">
+								<div class="flex items-center gap-2 text-sm font-medium">
+									@icon.UserPlus()
+									@t.T("signup.create-new-account")
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="flex items-center justify-center mt-1">
+						<div class="w-4/5 p-3">
+							@component.AkiraLogo()
+						</div>
+					</div>
+					<div class="card-body gap-4 pt-1">
+						<div class="flex flex-col gap-1">
+							<label class="input input-border flex w-full items-center gap-2">
+								@icon.User()
+								<input type="text" class="grow" placeholder={ t.TS(ctx, "common.name") }/>
+							</label>
+						</div>
+						<div class="flex flex-col gap-1">
+							<label class="input input-border flex  w-full items-center gap-2">
+								@icon.Mail()
+								<input type="email" class="grow" placeholder={ t.TS(ctx, "common.email") }/>
+							</label>
+						</div>
+						<div class="flex flex-col gap-1">
+							<label class="input input-border flex  w-full items-center gap-2">
+								@icon.Key()
+								<input type="password" class="grow" placeholder={ t.TS(ctx, "common.password") }/>
+							</label>
+							<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
+								<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
+							</span>
+						</div>
+						<div class="card-actions items-center gap-6">
+							<button class="btn btn-primary">
+								@t.T("signup.register")
+							</button>
+							<button class="link">
+								@t.T("signup.or-signin")
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			@component.Footer()
+		</div>
+	}
+}

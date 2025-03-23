@@ -13,6 +13,10 @@ templ N(key string, n int, args ...any) {
 	{ i18n.N(ctx, key, n, args...) }
 }
 
+func TS(ctx context.Context, key string, args ...any) string {
+	return i18n.T(ctx, key, args...)
+}
+
 func PreferredLocale(ctx context.Context) string {
 	return i18n.GetLocale(ctx).Code().String()
 }
