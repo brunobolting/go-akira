@@ -51,6 +51,8 @@ type SessionService interface {
 	GenerateSessionID() (string, error)
 	SignSessionID(sessionID string) string
 	VerifySessionID(signedID string) (string, bool)
+	SetSessionMiddleware(next http.Handler) http.Handler
+	AuthenticationRequiredMiddleware(w http.ResponseWriter, r *http.Request) error
 }
 
 type SessionRepository interface {

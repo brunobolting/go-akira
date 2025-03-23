@@ -2,11 +2,12 @@ package user
 
 import (
 	"akira/internal/entity"
+	"context"
 	"database/sql"
 )
 
-func Make(db *sql.DB) (entity.UserService, entity.UserRepository) {
+func Make(ctx context.Context, db *sql.DB, logger entity.Logger) (entity.UserService, entity.UserRepository) {
 	repo := NewUserSqliteRepository(db)
-	service := NewService(repo)
+	service := NewService(ctx, repo, logger)
 	return service, repo
 }

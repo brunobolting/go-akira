@@ -24,6 +24,11 @@ tailwind/watch: ## compile tailwindcss and watch for changes
 tailwind/build: ## one-time compile tailwindcss styles
 	@./tailwindcss -i ./static/css/custom.css -o ./static/css/style.css
 
+.PHONY: daisyui/install
+daisyui/install: ## Installs the daisyui tailwindcss plugin
+	@curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js
+	@mv daisyui.js ./static/plugin/daisyui.js
+
 .PHONY: run
 run: ## go run the project
 	go run ./cmd/app/main.go

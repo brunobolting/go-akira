@@ -3,6 +3,7 @@ tmp
 tailwindcss
 **/*_templ.go
 static/css/style.css
+static/plugin/daisyui.js
 db/app.db
 db/app.db-shm
 db/app.db-wal

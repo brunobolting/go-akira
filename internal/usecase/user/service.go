@@ -1,21 +1,36 @@
 package user
 
-import "akira/internal/entity"
+import (
+	"akira/internal/entity"
+	"context"
+)
 
 var _ entity.UserService = (*Service)(nil)
 
 type Service struct {
-	repo entity.UserRepository
+	repo   entity.UserRepository
+	logger entity.Logger
+	ctx    context.Context
 }
 
-func NewService(repo entity.UserRepository) *Service {
-	return &Service{repo: repo}
+func NewService(ctx context.Context, repo entity.UserRepository, logger entity.Logger) *Service {
+	return &Service{ctx: ctx, repo: repo, logger: logger}
 }
 
 func (s *Service) FindUserByID(id string) (*entity.User, error) {
-	return s.repo.FindUserByID(id)
+	u, err := s.repo.FindUserByID(id)
+	if err != nil {
+		s.logger.Error(s.ctx, "failed to find user by ID", err, map[string]interface{}{"id": id})
+		return nil, err
+	}
+	return u, nil
 }
 
 func (s *Service) FindUserByEmail(email string) (*entity.User, error) {
-	return s.repo.FindUserByEmail(email)
+	u, err := s.repo.FindUserByEmail(email)
+	if err != nil {
+		s.logger.Error(s.ctx, "failed to find user by email", err, map[string]interface{}{"email": email})
+		return nil, err
+	}
+	return u, nil
 }

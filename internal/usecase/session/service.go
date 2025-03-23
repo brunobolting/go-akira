@@ -195,3 +195,34 @@ func (s *Service) VerifySessionID(signedID string) (string, bool) {
 	expectedSignature := s.SignSessionID(sessionId)
 	return sessionId, hmac.Equal([]byte(expectedSignature), []byte(signedID))
 }
+
+func (s *Service) SetSessionMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cookie, err := r.Cookie(s.config.Name)
+		if err != nil {
+			next.ServeHTTP(w, r)
+			return
+		}
+		session, err := s.FindSession(r.Context(), cookie.Value)
+		if err != nil {
+			s.ClearCookie(r.Context(), w)
+			next.ServeHTTP(w, r)
+			return
+		}
+		ctx := context.WithValue(r.Context(), entity.SESSION_NAME, session)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+func (s *Service) AuthenticationRequiredMiddleware(w http.ResponseWriter, r *http.Request) error {
+	session, ok := r.Context().Value(entity.SESSION_NAME).(*entity.Session)
+	if !ok || session == nil {
+		return entity.ErrUserUnauthorized
+	}
+	_, err := s.FindSession(r.Context(), session.ID)
+	if err != nil {
+		s.logger.Error(r.Context(), "failed to authenticate session", err, nil)
+		return entity.ErrUserUnauthorized
+	}
+	return nil
+}
