@@ -109,4 +109,5 @@ func (h *Handler) MakeRoutes() {
 	h.r.Get("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))).ServeHTTP)
 	h.r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
 	h.r.Get("/auth/signup", MakeHandler(h.handleSignUpPage, h.logger))
+	h.r.Get("/auth/signin", MakeHandler(h.handleSignInPage, h.logger))
 }

@@ -3,7 +3,10 @@ pt-BR:
     hello-world: Olá Mundo!
 
   signin:
+    access-account: Acesse sua conta
     signin-to-continue: Faça login para continuar
+    access: Entrar
+    or-create-account: Ou crie uma conta
 
   signup:
     create-new-account: Crie uma nova conta

@@ -12,3 +12,7 @@ func (h *Handler) handleIndexPage(w http.ResponseWriter, r *http.Request) error 
 func (h *Handler) handleSignUpPage(w http.ResponseWriter, r *http.Request) error {
 	return Render(w, r, page.SignUp())
 }
+
+func (h *Handler) handleSignInPage(w http.ResponseWriter, r *http.Request) error {
+	return Render(w, r, page.SignIn())
+}

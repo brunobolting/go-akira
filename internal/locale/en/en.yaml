@@ -3,7 +3,10 @@ en:
     hello-world: Hello World!
 
   signin:
+    access-account: Access your account
     signin-to-continue: Sign in to continue
+    access: Sign in
+    or-create-account: Or create an account
 
   signup:
     create-new-account: Create new account
@@ -27,7 +30,6 @@ en:
     change-language: Change language
     english: English
     brazilian: Brazilian
-
 
   theme:
     change-theme: Change theme

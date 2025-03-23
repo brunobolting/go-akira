@@ -2,14 +2,14 @@ package page
 
 import (
 	"akira/internal/view/component"
+	"akira/internal/view/component/field"
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
 	"akira/internal/view/layout"
-	"akira/internal/view/component/field"
 )
 
-templ SignUp() {
-	@layout.Layout("SignUp") {
+templ SignIn() {
+	@layout.Layout("SignIn") {
 		<div class="flex flex-col min-h-screen">
 			<div class="flex-grow flex items-center justify-center bg-base-200">
 				<div class="card w-96 bg-base-100 shadow-xl">
@@ -17,8 +17,8 @@ templ SignUp() {
 						<div class="flex items-center gap-2 p-4">
 							<div class="grow">
 								<div class="flex items-center gap-2 text-sm font-medium">
-									@icon.UserPlus()
-									@t.T("signup.create-new-account")
+									@icon.UserCheck()
+									@t.T("signin.access-account")
 								</div>
 							</div>
 						</div>
@@ -30,23 +30,17 @@ templ SignUp() {
 					</div>
 					<div class="card-body gap-4 pt-1">
 						<div class="flex flex-col gap-1">
-							@field.Name()
-						</div>
-						<div class="flex flex-col gap-1">
 							@field.Email()
 						</div>
 						<div class="flex flex-col gap-1">
-							@field.Password("8")
-							<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
-								<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
-							</span>
+							@field.Password("0")
 						</div>
 						<div class="card-actions items-center gap-6">
 							<button class="btn btn-primary">
-								@t.T("signup.register")
+								@t.T("signin.access")
 							</button>
-						    <a href="/auth/signin" class="link">
-								@t.T("signup.or-signin")
+							<a href="/auth/signup" class="link">
+								@t.T("signin.or-create-account")
 							</a>
 						</div>
 					</div>

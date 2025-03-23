@@ -19,9 +19,9 @@ templ Email() {
 	</label>
 }
 
-templ Password() {
+templ Password(minlength string) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.Key()
-		<input type="password" name="password" class="grow" required minlength="8" placeholder={ t.TS(ctx, "common.password") }/>
+		<input type="password" name="password" class="grow" required minlength={minlength} placeholder={ t.TS(ctx, "common.password") }/>
 	</label>
 }
