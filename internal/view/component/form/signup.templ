@@ -1,0 +1,69 @@
+package form
+
+import (
+	"akira/internal/entity"
+	"akira/internal/view/component/field"
+	"akira/internal/view/config/captcha"
+	"akira/internal/view/config/i18n/t"
+)
+
+type SignUpProps struct {
+	Name     string
+	Email    string
+	Password string
+}
+
+templ renderGeneralErrors(err entity.RequestError) {
+	if generalErrs, exists := err["general"]; exists && len(generalErrs) > 0 {
+		<div class="alert alert-error text-sm shadow-sm">
+			<div>
+				<span class="i-tabler-alert-triangle mr-2"></span>
+				<ul>
+					for _, msg := range generalErrs {
+						<li>{ t.TS(ctx, msg) }</li>
+					}
+				</ul>
+			</div>
+		</div>
+	}
+}
+
+templ SignUp(v SignUpProps, err *entity.RequestError) {
+	<form hx-post="/auth/signup">
+		<div class="card-body gap-4 pt-1">
+			<div class="flex flex-col gap-1">
+				@field.Name(v.Name, err)
+			</div>
+			<div class="flex flex-col gap-1">
+				@field.Email(v.Email, err)
+			</div>
+			<div class="flex flex-col gap-1">
+				@field.Password(v.Password, "8", err)
+				// <span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
+				// 	<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
+				// </span>
+			</div>
+			@captcha.CloudflareCaptcha(err)
+			if err != nil && len(*err) > 0 {
+				<ul class="text-[0.6875rem] text-error">
+					for _, er := range *err {
+						for _, msg := range er {
+							<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
+								<span class="status status-error inline-block"></span>
+								{ t.TS(ctx, msg) }
+							</span>
+						}
+					}
+				</ul>
+			}
+			<div class="card-actions items-center gap-6">
+				<button class="btn btn-primary">
+					@t.T("signup.register")
+				</button>
+				<a href="/auth/signin" class="link">
+					@t.T("signup.or-signin")
+				</a>
+			</div>
+		</div>
+	</form>
+}

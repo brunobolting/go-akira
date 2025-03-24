@@ -3,25 +3,53 @@ package field
 import (
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
+	"akira/internal/entity"
 )
 
-templ Name() {
+func removeErr(err *entity.RequestError, field string) {
+	if _, exists := (*err)[field]; exists {
+		delete(*err, field)
+	}
+}
+
+templ FieldError(err *entity.RequestError, field string) {
+	if fieldErrs, exists := (*err)[field]; exists && len(fieldErrs) > 0 {
+		<div class="text-error text-[0.6875rem] mt-1">
+			for _, msg := range fieldErrs {
+				<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
+					<span class="status status-error inline-block"></span>
+					{ t.TS(ctx, msg) }
+				</span>
+				// <div class="flex items-start gap-1">
+				// 	<span class="status status-error mt-0.5 flex-shrink-0"></span>
+				// 	<span>{ t.TS(ctx, msg) }</span>
+				// </div>
+			}
+		</div>
+	}
+	{{ removeErr(err, field) }}
+}
+
+templ Name(value string, err *entity.RequestError) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.User()
-		<input type="text" name="name" class="grow" required minlength="3" placeholder={ t.TS(ctx, "common.name") }/>
+		<input type="text" value={value} name="name" class="grow" required minlength="3" placeholder={ t.TS(ctx, "common.name") }/>
 	</label>
+	@FieldError(err, "name")
 }
 
-templ Email() {
+templ Email(value string, err *entity.RequestError) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.Mail()
-		<input type="email" name="email" class="grow" required placeholder={ t.TS(ctx, "common.email") }/>
+		<input type="email" value={value} name="email" class="grow" required placeholder={ t.TS(ctx, "common.email") }/>
 	</label>
+	@FieldError(err, "email")
 }
 
-templ Password(minlength string) {
+templ Password(value string, minlength string, err *entity.RequestError) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.Key()
-		<input type="password" name="password" class="grow" required minlength={minlength} placeholder={ t.TS(ctx, "common.password") }/>
+		<input type="password" value={value} name="password" class="grow" required minlength={minlength} placeholder={ t.TS(ctx, "common.password") }/>
 	</label>
+	@FieldError(err, "password")
 }

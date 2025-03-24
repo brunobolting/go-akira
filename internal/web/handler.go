@@ -2,7 +2,6 @@ package web
 
 import (
 	"akira/internal/entity"
-	"akira/internal/view/component"
 	"encoding/json"
 	"net/http"
 	"sync"
@@ -11,7 +10,17 @@ import (
 	chi_middleware "github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
+	"github.com/invopop/ctxi18n/i18n"
 )
+
+type WebError struct {
+	code int
+	msg  string
+}
+
+func (e WebError) Error() string {
+	return string(e.msg)
+}
 
 type WebHandler func(w http.ResponseWriter, r *http.Request) error
 
@@ -26,6 +35,7 @@ type Handler struct {
 	mu      *sync.Mutex
 	user    entity.UserService
 	session entity.SessionService
+	auth    entity.AuthService
 	logger  entity.Logger
 	i18n    entity.I18nService
 	theme   entity.ThemeService
@@ -38,8 +48,12 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func MakeHandler(h WebHandler, logger entity.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := h(w, r); err != nil {
+			if _, ok := err.(WebError); ok {
+				http.Error(w, i18n.T(r.Context(), err.Error()), err.(WebError).code)
+				return
+			}
 			logger.Error(r.Context(), "failed to handle request", err, nil)
-			Render(w, r, component.Error(err.Error()))
+			http.Error(w, i18n.T(r.Context(), "error.unexpected-error"), http.StatusInternalServerError)
 		}
 	}
 }
@@ -48,8 +62,12 @@ func MakeMiddleware(h Middleware, logger entity.Logger) func(http.Handler) http.
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if err := h(w, r); err != nil {
+				if _, ok := err.(WebError); ok {
+					http.Error(w, i18n.T(r.Context(), err.Error()), err.(WebError).code)
+					return
+				}
 				logger.Error(r.Context(), "failed to handle middleware", err, nil)
-				Render(w, r, component.Error(err.Error()))
+				http.Error(w, i18n.T(r.Context(), "error.unexpected-error"), http.StatusInternalServerError)
 				return
 			}
 			next.ServeHTTP(w, r)
@@ -92,6 +110,7 @@ func NewHandler(
 	r *chi.Mux,
 	user entity.UserService,
 	session entity.SessionService,
+	auth entity.AuthService,
 	logger entity.Logger,
 	i18n entity.I18nService,
 	theme entity.ThemeService,
@@ -102,6 +121,7 @@ func NewHandler(
 		mu:      &sync.Mutex{},
 		user:    user,
 		session: session,
+		auth:    auth,
 		logger:  logger,
 		i18n:    i18n,
 		theme:   theme,
@@ -129,8 +149,14 @@ func (h *Handler) MakeRoutes() {
 		http.ServeFile(w, r, "static/favicon.ico")
 	})
 	h.r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
-	h.r.Get("/auth/signup", MakeHandler(h.handleSignUpPage, h.logger))
-	h.r.Get("/auth/signin", MakeHandler(h.handleSignInPage, h.logger))
+	h.r.Get("/error", func(w http.ResponseWriter, r *http.Request)  {
+		http.Error(w, i18n.T(r.Context(), "error.unexpected-error"), http.StatusInternalServerError)
+	})
+	h.r.Route("/auth", func(r chi.Router) {
+		r.Get("/signup", MakeHandler(h.handleSignUpPage, h.logger))
+		r.Post("/signup", MakeHandler(h.handleSignUpRequest, h.logger))
+		r.Get("/signin", MakeHandler(h.handleSignInPage, h.logger))
+	})
 	h.r.Route("/api", func(r chi.Router) {
 		r.Post("/change-theme", MakeHandler(h.handleChangeTheme, h.logger))
 		r.Post("/change-locale", MakeHandler(h.handleChangeLocale, h.logger))

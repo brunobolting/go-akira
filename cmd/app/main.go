@@ -5,6 +5,7 @@ import (
 	"akira/internal/db"
 	"akira/internal/locale"
 	"akira/internal/server"
+	"akira/internal/usecase/auth"
 	"akira/internal/usecase/i18n"
 	"akira/internal/usecase/logger"
 	"akira/internal/usecase/session"
@@ -58,8 +59,9 @@ func run(ctx context.Context) error {
 	sessionService, _ := session.Make(ctx, sqlite, logger)
 	i18n := i18n.Make(ctx, logger)
 	theme := theme.Make(ctx, logger)
+	auth := auth.Make(ctx, userService, logger)
 	app := chi.NewRouter()
-	web := web.NewHandler(app, userService, sessionService, logger, i18n, theme, web.Options{
+	web := web.NewHandler(app, userService, sessionService, auth, logger, i18n, theme, web.Options{
 		AllowedOrigins: []string{"same-origin"},
 	})
 	s := server.NewServer(ctx, "", env.PORT, web, logger)

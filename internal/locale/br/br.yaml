@@ -33,3 +33,23 @@ pt-BR:
 
   theme:
     change-theme: Tema
+
+  error:
+    name:
+      required: Nome é obrigatório
+      min-length: Nome deve ter pelo menos %d caracteres
+      simple:
+        min-length: Nome não atende à quantidade mínima de caracteres
+    email:
+      required: E-mail é obrigatório
+      invalid: E-mail inválido
+    password:
+      required: Senha é obrigatória
+      min-length: Senha deve ter pelo menos %d caracteres
+      simple:
+        min-length: Senha não atende à quantidade mínima de caracteres
+    captcha:
+      required: Captcha é obrigatório
+    unexpected-error: Erro inesperado
+    user:
+      already-exists: Conta já registrada

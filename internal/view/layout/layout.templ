@@ -3,6 +3,7 @@ package layout
 import (
 	"akira/internal/view/config/i18n/t"
 	"akira/internal/view/config/theme"
+	"akira/internal/view/component"
 )
 
 templ header(title string) {
@@ -21,6 +22,7 @@ templ Layout(title string) {
 			<div class="">
 				{ children... }
 			</div>
+			@component.GlobalError()
 			<script src="/static/htmx/htmx@2.0.4.min.js"></script>
 			<script src="/static/htmx/ext/ws@2.0.1.js"></script>
 			<script src="/static/htmx/ext/json-enc@2.0.1.js"></script>

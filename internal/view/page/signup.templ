@@ -5,10 +5,11 @@ import (
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
 	"akira/internal/view/layout"
-	"akira/internal/view/component/field"
+	"akira/internal/entity"
+	"akira/internal/view/component/form"
 )
 
-templ SignUp() {
+templ SignUp(v form.SignUpProps, err entity.RequestError) {
 	@layout.Layout("SignUp") {
 		<div class="flex flex-col min-h-screen">
 			<div class="flex-grow flex items-center justify-center bg-base-200">
@@ -28,28 +29,7 @@ templ SignUp() {
 							@component.AkiraLogo()
 						</div>
 					</div>
-					<div class="card-body gap-4 pt-1">
-						<div class="flex flex-col gap-1">
-							@field.Name()
-						</div>
-						<div class="flex flex-col gap-1">
-							@field.Email()
-						</div>
-						<div class="flex flex-col gap-1">
-							@field.Password("8")
-							<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
-								<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
-							</span>
-						</div>
-						<div class="card-actions items-center gap-6">
-							<button class="btn btn-primary">
-								@t.T("signup.register")
-							</button>
-						    <a href="/auth/signin" class="link">
-								@t.T("signup.or-signin")
-							</a>
-						</div>
-					</div>
+					@form.SignUp(v, &err)
 				</div>
 			</div>
 			@component.Footer()

@@ -23,6 +23,8 @@ var (
 	LOGGER_SENTRY_DSN                string
 	LOGGER_SENTRY_TRACES_SAMPLE_RATE float64
 	LOGGER_SENTRY_DEBUG              bool
+	TURNSTILE_SITE_KEY               string
+	TURNSTILE_SECRET_KEY             string
 )
 
 func Load() error {
@@ -70,6 +72,8 @@ func setenvs() {
 	LOGGER_SENTRY_DSN = getenv("LOGGER_SENTRY_DSN", "", str)
 	LOGGER_SENTRY_TRACES_SAMPLE_RATE = getenv("LOGGER_SENTRY_TRACES_SAMPLE_RATE", 0.0, flt64)
 	LOGGER_SENTRY_DEBUG = getenv("LOGGER_SENTRY_DEBUG", false, boolean)
+	TURNSTILE_SITE_KEY = getenv("TURNSTILE_SITE_KEY", "", str)
+	TURNSTILE_SECRET_KEY = getenv("TURNSTILE_SECRET_KEY", "", str)
 }
 
 func getenv[T any](key string, defaultValue T, parser func(string) T) T {

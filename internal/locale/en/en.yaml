@@ -33,3 +33,23 @@ en:
 
   theme:
     change-theme: Theme
+
+  error:
+    name:
+      required: Name is required
+      min-length: Name must be at least %d characters
+      simple:
+        min-length: Name does not meet the minimum length
+    email:
+      required: E-mail is required
+      invalid: Invalid e-mail
+    password:
+      required: Password is required
+      min-length: Password must be at least %d characters
+      simple:
+        min-length: Password does not meet the minimum length
+    captcha:
+      required: Captcha is required
+    unexpected-error: Unexpected error
+    user:
+      already-exists: Account already registered

@@ -1,0 +1,19 @@
+package captcha
+
+import (
+	"akira/internal/config/env"
+	"akira/internal/entity"
+	"akira/internal/view/component/field"
+)
+
+var handleCaptcha = templ.NewOnceHandle()
+
+templ CloudflareCaptcha(err *entity.RequestError) {
+	if env.ISPROD {
+		@handleCaptcha.Once() {
+			<div class="cf-turnstile" data-sitekey={ env.TURNSTILE_SITE_KEY }></div>
+			<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+			@field.FieldError(err, "captcha")
+		}
+	}
+}

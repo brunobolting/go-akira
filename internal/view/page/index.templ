@@ -8,5 +8,8 @@ import (
 templ Index() {
 	@layout.Page("Home") {
 		<h1 class="text-4xl font-bold">@t.T("index.hello-world")</h1>
+		<button hx-get="/error" hx-trigger="click" class="btn btn-error">
+			Testar Erro
+		</button>
 	}
 }
