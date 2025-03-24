@@ -3,6 +3,7 @@ package web
 import (
 	"akira/internal/entity"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"sync"
 
@@ -62,6 +63,10 @@ func MakeMiddleware(h Middleware, logger entity.Logger) func(http.Handler) http.
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if err := h(w, r); err != nil {
+				if err == entity.ErrUserUnauthorized {
+					HxRedirect(w, r, fmt.Sprintf("/auth/signin?error=%s", i18n.T(r.Context(), err.Error())))
+					return
+				}
 				if _, ok := err.(WebError); ok {
 					http.Error(w, i18n.T(r.Context(), err.Error()), err.(WebError).code)
 					return
@@ -148,8 +153,11 @@ func (h *Handler) MakeRoutes() {
 	h.r.Get("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "static/favicon.ico")
 	})
-	h.r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
-	h.r.Get("/error", func(w http.ResponseWriter, r *http.Request)  {
+	h.r.Route("/", func(r chi.Router) {
+		r.Use(MakeMiddleware(h.session.AuthenticationRequiredMiddleware, h.logger))
+		r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
+	})
+	h.r.Get("/error", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, i18n.T(r.Context(), "error.unexpected-error"), http.StatusInternalServerError)
 	})
 	h.r.Route("/auth", func(r chi.Router) {

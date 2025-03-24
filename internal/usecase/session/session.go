@@ -23,7 +23,7 @@ func Make(ctx context.Context, db *sql.DB, logger entity.Logger) (entity.Session
 			SameSite: http.SameSiteLaxMode,
 		},
 		GCInterval: 5 * time.Minute,
-		SecretKey:  []byte(env.SESSION_SECRET),
+		SecretKey:  env.SESSION_SECRET,
 	}, repo, logger)
 	return service, repo
 }

@@ -53,5 +53,6 @@ en:
     unexpected-error: Unexpected error
     user:
       already-exists: Account already registered
+      unauthorized: Account unauthorized
     auth:
       invalid-email-or-pass: E-mail or password is invalid

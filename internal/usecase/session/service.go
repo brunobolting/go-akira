@@ -24,7 +24,7 @@ type Service struct {
 	gcInterval time.Duration
 	repo       entity.SessionRepository
 	logger     entity.Logger
-	secretKey  []byte
+	secretKey  string
 }
 
 type Options struct {
@@ -32,7 +32,7 @@ type Options struct {
 	Lifetime   time.Duration
 	Cookie     *entity.CookieConfig
 	GCInterval time.Duration
-	SecretKey  []byte
+	SecretKey  string
 }
 
 func NewService(opts Options, repository entity.SessionRepository, logger entity.Logger) *Service {
@@ -76,7 +76,8 @@ func (s *Service) FindSession(ctx context.Context, sessionID string) (*entity.Se
 	session, exists := s.sessions[ID]
 	s.mu.RUnlock()
 	if !exists {
-		session, err := s.repo.FindSession(ID)
+		var err error
+		session, err = s.repo.FindSession(ID)
 		if err != nil {
 			if err == entity.ErrSessionNotFound {
 				return nil, err
@@ -91,7 +92,7 @@ func (s *Service) FindSession(ctx context.Context, sessionID string) (*entity.Se
 	if session == nil {
 		return nil, entity.ErrSessionNotFound
 	}
-	if session.ExpiresAt.Before(time.Now().UTC()) {
+	if time.Now().UTC().After(session.ExpiresAt) {
 		s.DeleteSession(ctx, session.ID)
 		return nil, entity.ErrSessionExpired
 	}
@@ -180,7 +181,7 @@ func (s *Service) GenerateSessionID() (string, error) {
 }
 
 func (s *Service) SignSessionID(sessionID string) string {
-	h := hmac.New(sha256.New, s.secretKey)
+	h := hmac.New(sha256.New, []byte(s.secretKey))
 	h.Write([]byte(sessionID))
 	signature := base64.URLEncoding.EncodeToString(h.Sum(nil))
 	return fmt.Sprintf("%s.%s", sessionID, signature)
@@ -191,9 +192,9 @@ func (s *Service) VerifySessionID(signedID string) (string, bool) {
 	if len(parts) != 2 {
 		return "", false
 	}
-	sessionId := parts[0]
-	expectedSignature := s.SignSessionID(sessionId)
-	return sessionId, hmac.Equal([]byte(expectedSignature), []byte(signedID))
+	sessionID := parts[0]
+	expectedSignature := s.SignSessionID(sessionID)
+	return sessionID, hmac.Equal([]byte(expectedSignature), []byte(signedID))
 }
 
 func (s *Service) SetSessionMiddleware(next http.Handler) http.Handler {
@@ -216,12 +217,7 @@ func (s *Service) SetSessionMiddleware(next http.Handler) http.Handler {
 
 func (s *Service) AuthenticationRequiredMiddleware(w http.ResponseWriter, r *http.Request) error {
 	session, ok := r.Context().Value(entity.SESSION_NAME).(*entity.Session)
-	if !ok || session == nil {
-		return entity.ErrUserUnauthorized
-	}
-	_, err := s.FindSession(r.Context(), session.ID)
-	if err != nil {
-		s.logger.Error(r.Context(), "failed to authenticate session", err, nil)
+	if !ok || session == nil || session.ID == "" {
 		return entity.ErrUserUnauthorized
 	}
 	return nil

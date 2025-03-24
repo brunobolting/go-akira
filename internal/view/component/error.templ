@@ -16,6 +16,12 @@ templ GlobalError() {
 			@icon.WarningTriagle()
 		</div>
 		<script>
+			const params = new URLSearchParams(window.location.search)
+			if (params.has("error")) {
+				showToast(params.get("error"))
+				window.history.replaceState({}, document.title, window.location.pathname)
+			}
+
 			document.body.addEventListener('htmx:responseError', function(event) {
 				const message = event.detail.xhr.responseText || "An error occurred"
 				showToast(message)

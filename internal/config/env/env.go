@@ -74,6 +74,7 @@ func setenvs() {
 	LOGGER_SENTRY_DEBUG = getenv("LOGGER_SENTRY_DEBUG", false, boolean)
 	TURNSTILE_SITE_KEY = getenv("TURNSTILE_SITE_KEY", "", str)
 	TURNSTILE_SECRET_KEY = getenv("TURNSTILE_SECRET_KEY", "", str)
+	SESSION_SECRET = getenv("SESSION_SECRET", "Uy@!DNv3@8iikzWNBqb24bFCWgi!FaBY", str)
 }
 
 func getenv[T any](key string, defaultValue T, parser func(string) T) T {

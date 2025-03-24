@@ -53,5 +53,6 @@ pt-BR:
     unexpected-error: Erro inesperado
     user:
       already-exists: Conta já registrada
+      unauthorized: Conta não autorizada
     auth:
       invalid-email-or-pass: E-mail ou senha inválidos
