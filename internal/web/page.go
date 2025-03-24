@@ -25,10 +25,8 @@ func (h *Handler) handleSignInPage(w http.ResponseWriter, r *http.Request) error
 	if err := r.ParseForm(); err != nil {
 		return err
 	}
-	email := r.Form.Get("email")
-	password := r.Form.Get("password")
-	return Render(w, r, page.SignIn(page.SignInProps{
-		Email:    email,
-		Password: password,
+	return Render(w, r, page.SignIn(form.SignInProps{
+		Email:    "",
+		Password: "",
 	}, nil))
 }

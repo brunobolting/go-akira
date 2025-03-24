@@ -2,20 +2,14 @@ package page
 
 import (
 	"akira/internal/view/component"
-	"akira/internal/view/component/field"
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
 	"akira/internal/view/layout"
-	"akira/internal/view/config/captcha"
 	"akira/internal/entity"
+	"akira/internal/view/component/form"
 )
 
-type SignInProps struct {
-	Email    string
-	Password string
-}
-
-templ SignIn(v SignInProps, err *entity.RequestError) {
+templ SignIn(v form.SignInProps, err *entity.RequestError) {
 	@layout.Layout("SignIn") {
 		<div class="flex flex-col min-h-screen">
 			<div class="flex-grow flex items-center justify-center bg-base-200">
@@ -35,23 +29,7 @@ templ SignIn(v SignInProps, err *entity.RequestError) {
 							@component.AkiraLogo()
 						</div>
 					</div>
-					<div class="card-body gap-4 pt-1">
-						<div class="flex flex-col gap-1">
-							@field.Email(v.Email, err)
-						</div>
-						<div class="flex flex-col gap-1">
-							@field.Password(v.Password, "0", err)
-						</div>
-						@captcha.CloudflareCaptcha(err)
-						<div class="card-actions items-center gap-6">
-							<button class="btn btn-primary">
-								@t.T("signin.access")
-							</button>
-							<a href="/auth/signup" class="link">
-								@t.T("signin.or-create-account")
-							</a>
-						</div>
-					</div>
+					@form.SignIn(v, err)
 				</div>
 			</div>
 			@component.Footer()

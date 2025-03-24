@@ -37,7 +37,8 @@ func (s *Service) FindUserByEmail(email string) (*entity.User, error) {
 
 func (s *Service) CreateUser(name, email, password string) (*entity.User, error) {
 	exists, err := s.FindUserByEmail(email)
-	if err != nil {
+	if err != nil && err != entity.ErrNotFound {
+		s.logger.Error(s.ctx, "failed to create user", err, map[string]any{"email": email})
 		return nil, err
 	}
 	if exists != nil {

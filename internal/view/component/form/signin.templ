@@ -7,26 +7,19 @@ import (
 	"akira/internal/view/config/i18n/t"
 )
 
-type SignUpProps struct {
-	Name     string
+type SignInProps struct {
 	Email    string
 	Password string
 }
 
-templ SignUp(v SignUpProps, err *entity.RequestError) {
-	<form hx-post="/auth/signup">
+templ SignIn(v SignInProps, err *entity.RequestError) {
+	<form hx-post="/auth/signin">
 		<div class="card-body gap-4 pt-1">
-			<div class="flex flex-col gap-1">
-				@field.Name(v.Name, err)
-			</div>
 			<div class="flex flex-col gap-1">
 				@field.Email(v.Email, err)
 			</div>
 			<div class="flex flex-col gap-1">
-				@field.Password(v.Password, "8", err)
-				// <span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
-				// 	<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
-				// </span>
+				@field.Password(v.Password, "0", err)
 			</div>
 			@captcha.CloudflareCaptcha(err)
 			if err != nil && len(*err) > 0 {
@@ -43,10 +36,10 @@ templ SignUp(v SignUpProps, err *entity.RequestError) {
 			}
 			<div class="card-actions items-center gap-6">
 				<button class="btn btn-primary">
-					@t.T("signup.register")
+					@t.T("signin.access")
 				</button>
-				<a href="/auth/signin" class="link">
-					@t.T("signup.or-signin")
+				<a href="/auth/signup" class="link">
+					@t.T("signin.or-create-account")
 				</a>
 			</div>
 		</div>

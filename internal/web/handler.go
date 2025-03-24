@@ -156,6 +156,7 @@ func (h *Handler) MakeRoutes() {
 		r.Get("/signup", MakeHandler(h.handleSignUpPage, h.logger))
 		r.Post("/signup", MakeHandler(h.handleSignUpRequest, h.logger))
 		r.Get("/signin", MakeHandler(h.handleSignInPage, h.logger))
+		r.Post("/signin", MakeHandler(h.handleSignInRequest, h.logger))
 	})
 	h.r.Route("/api", func(r chi.Router) {
 		r.Post("/change-theme", MakeHandler(h.handleChangeTheme, h.logger))

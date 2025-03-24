@@ -38,20 +38,27 @@ func (s *Service) SignUp(ctx context.Context, req entity.SignUpRequest) (*entity
 	}
 	user, err := s.user.CreateUser(req.Name, req.Email, req.Password)
 	if err != nil {
-		s.logger.Error(s.ctx, "failed to create user", err, map[string]any{"email": req.Email})
 		return nil, err
 	}
 	return user, nil
 }
 
-func (s *Service) Authenticate(ctx context.Context, email, password string) (*entity.User, error) {
+func (s *Service) Authenticate(ctx context.Context, req entity.SignInRequest) (*entity.User, error) {
+	if err := req.Validate(); err != nil {
+		s.logger.Error(s.ctx, "invalid sign in request", err, map[string]any{"email": req.Email})
+		return nil, err
+	}
+	if err := s.captcha.Verify(ctx, req.Captcha); err != nil {
+		var e entity.RequestError
+		return nil, e.Add("captcha", "error.captcha.invalid")
+	}
 	time.Sleep(entity.GetRandomSleep())
-	user, err := s.user.FindUserByEmail(email)
+	user, err := s.user.FindUserByEmail(req.Email)
 	if err != nil || user == nil {
 		return nil, entity.ErrInvalidEmailOrPassword
 	}
 	time.Sleep(entity.GetRandomSleep())
-	if !user.ComparePassword(password) {
+	if !user.ComparePassword(req.Password) {
 		return nil, entity.ErrInvalidEmailOrPassword
 	}
 	return user, nil

@@ -1,9 +1,9 @@
 package field
 
 import (
+	"akira/internal/entity"
 	"akira/internal/view/component/icon"
 	"akira/internal/view/config/i18n/t"
-	"akira/internal/entity"
 )
 
 func removeErr(err *entity.RequestError, field string) {
@@ -13,6 +13,9 @@ func removeErr(err *entity.RequestError, field string) {
 }
 
 templ FieldError(err *entity.RequestError, field string) {
+	if err == nil {
+		{{ return }}
+	}
 	if fieldErrs, exists := (*err)[field]; exists && len(fieldErrs) > 0 {
 		<div class="text-error text-[0.6875rem] mt-1">
 			for _, msg := range fieldErrs {
@@ -20,10 +23,6 @@ templ FieldError(err *entity.RequestError, field string) {
 					<span class="status status-error inline-block"></span>
 					{ t.TS(ctx, msg) }
 				</span>
-				// <div class="flex items-start gap-1">
-				// 	<span class="status status-error mt-0.5 flex-shrink-0"></span>
-				// 	<span>{ t.TS(ctx, msg) }</span>
-				// </div>
 			}
 		</div>
 	}
@@ -33,7 +32,7 @@ templ FieldError(err *entity.RequestError, field string) {
 templ Name(value string, err *entity.RequestError) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.User()
-		<input type="text" value={value} name="name" class="grow" required minlength="3" placeholder={ t.TS(ctx, "common.name") }/>
+		<input type="text" value={ value } name="name" class="grow" required minlength="3" placeholder={ t.TS(ctx, "common.name") }/>
 	</label>
 	@FieldError(err, "name")
 }
@@ -41,7 +40,7 @@ templ Name(value string, err *entity.RequestError) {
 templ Email(value string, err *entity.RequestError) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.Mail()
-		<input type="email" value={value} name="email" class="grow" required placeholder={ t.TS(ctx, "common.email") }/>
+		<input type="email" value={ value } name="email" class="grow" required placeholder={ t.TS(ctx, "common.email") }/>
 	</label>
 	@FieldError(err, "email")
 }
@@ -49,7 +48,7 @@ templ Email(value string, err *entity.RequestError) {
 templ Password(value string, minlength string, err *entity.RequestError) {
 	<label class="input input-border validator flex w-full items-center gap-2">
 		@icon.Key()
-		<input type="password" value={value} name="password" class="grow" required minlength={minlength} placeholder={ t.TS(ctx, "common.password") }/>
+		<input type="password" value={ value } name="password" class="grow" required minlength={ minlength } placeholder={ t.TS(ctx, "common.password") }/>
 	</label>
 	@FieldError(err, "password")
 }
