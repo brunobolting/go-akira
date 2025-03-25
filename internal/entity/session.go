@@ -42,6 +42,7 @@ type CookieConfig struct {
 type SessionService interface {
 	CreateSession(ctx context.Context, userID string) (*Session, error)
 	FindSession(ctx context.Context, sessionID string) (*Session, error)
+	GetSession(ctx context.Context) (*Session, error)
 	DeleteSession(ctx context.Context, sessionID string) error
 	SetCookie(ctx context.Context, w http.ResponseWriter, sessionID string)
 	ClearCookie(ctx context.Context, w http.ResponseWriter)

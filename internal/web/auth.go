@@ -76,3 +76,16 @@ func (h *Handler) handleSignInRequest(w http.ResponseWriter, r *http.Request) er
 	h.session.SetCookie(r.Context(), w, s.ID)
 	return HxRedirect(w, r, "/")
 }
+
+func (h *Handler) handleSignOutRequest(w http.ResponseWriter, r *http.Request) error {
+	session, err := h.session.GetSession(r.Context())
+	if err != nil {
+		return HxRedirect(w, r, "/auth/signin")
+	}
+	if err := h.session.DeleteSession(r.Context(), session.ID); err != nil {
+		h.logger.Error(r.Context(), "failed to delete session", err, nil)
+		return err
+	}
+	h.session.ClearCookie(r.Context(), w)
+	return HxRedirect(w, r, "/auth/signin")
+}

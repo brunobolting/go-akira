@@ -99,6 +99,14 @@ func (s *Service) FindSession(ctx context.Context, sessionID string) (*entity.Se
 	return session, nil
 }
 
+func (s *Service) GetSession(ctx context.Context) (*entity.Session, error) {
+	session, ok := ctx.Value(entity.SESSION_NAME).(*entity.Session)
+	if !ok || session == nil {
+		return nil, entity.ErrSessionNotFound
+	}
+	return session, nil
+}
+
 func (s *Service) DeleteSession(ctx context.Context, sessionID string) error {
 	s.mu.Lock()
 	delete(s.sessions, sessionID)
@@ -216,8 +224,8 @@ func (s *Service) SetSessionMiddleware(next http.Handler) http.Handler {
 }
 
 func (s *Service) AuthenticationRequiredMiddleware(w http.ResponseWriter, r *http.Request) error {
-	session, ok := r.Context().Value(entity.SESSION_NAME).(*entity.Session)
-	if !ok || session == nil || session.ID == "" {
+	_, err := s.GetSession(r.Context())
+	if err != nil {
 		return entity.ErrUserUnauthorized
 	}
 	return nil
