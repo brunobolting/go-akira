@@ -219,6 +219,7 @@ func (s *Service) SetSessionMiddleware(next http.Handler) http.Handler {
 			return
 		}
 		ctx := context.WithValue(r.Context(), entity.SESSION_NAME, session)
+		ctx = context.WithValue(ctx, entity.REMOTEIP_NAME, r.RemoteAddr)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

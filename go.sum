@@ -1,5 +1,7 @@
 github.com/a-h/templ v0.3.850 h1:kNCe4CJABjY618ullJakyI5aP2RJ0JkTU04i0qgxFpI=
 github.com/a-h/templ v0.3.850/go.mod h1:qhrhAkRFubE7khxLZHsBFHfX+gWwVNKbzKeF9GlPV4M=
+github.com/brunobolting/go-snowy v0.1.1 h1:XQT6zNIFe7jvbWU8t0ozqn7uV9E2ZbshvhL0JA45P3s=
+github.com/brunobolting/go-snowy v0.1.1/go.mod h1:ditBgCk7/XffkrJZCafx8CqtcM8W5WRlIrxRhEo0ZX8=
 github.com/getsentry/sentry-go v0.31.1 h1:ELVc0h7gwyhnXHDouXkhqTFSO5oslsRDk0++eyE0KJ4=
 github.com/getsentry/sentry-go v0.31.1/go.mod h1:CYNcMMz73YigoHljQRG+qPF+eMq8gG72XcGN/p71BAY=
 github.com/go-chi/chi v1.5.5 h1:vOB/HbEMt9QqBqErz07QehcOKHaWFtuj87tTDVz2qXE=

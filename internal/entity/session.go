@@ -8,6 +8,7 @@ import (
 
 const SESSION_NAME = "akira_session"
 const COOKIE_NAME = "akira_cookie"
+const REMOTEIP_NAME = "akira_remoteip"
 
 type Session struct {
 	ID        string
