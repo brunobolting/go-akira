@@ -50,6 +50,7 @@ en:
         min-length: Password does not meet the minimum length
     captcha:
       required: Captcha is required
+      invalid: Invalid captcha, reload the page and try again
     unexpected-error: Unexpected error
     user:
       already-exists: Account already registered

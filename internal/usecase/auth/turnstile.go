@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"akira/internal/config/env"
 	"akira/internal/entity"
 	"context"
 
@@ -22,6 +23,9 @@ func NewTurnstileCaptcha(secretKey string) *TurnstileCaptcha {
 }
 
 func (t *TurnstileCaptcha) Verify(ctx context.Context, captcha string) error {
+	if !env.ISPROD {
+		return nil
+	}
 	remoteip, ok := ctx.Value(entity.REMOTEIP_NAME).(string)
 	if !ok {
 		remoteip = ""

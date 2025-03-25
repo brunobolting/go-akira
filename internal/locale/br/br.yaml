@@ -50,6 +50,7 @@ pt-BR:
         min-length: Senha não atende à quantidade mínima de caracteres
     captcha:
       required: Captcha é obrigatório
+      invalid: Captcha inválido, recarregue a página e tente novamente
     unexpected-error: Erro inesperado
     user:
       already-exists: Conta já registrada
