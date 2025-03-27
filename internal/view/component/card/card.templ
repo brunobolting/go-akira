@@ -1,0 +1,24 @@
+package card
+
+templ Card() {
+	<div class="group relative bg-transparent">
+		<div class="w-full aspect-[3/4] bg-base-100 rounded-lg shadow-md overflow-hidden transition-transform duration-300 transform preserve-3d hover:translate-y-[-10px] hover:rotate-y-[-3deg] hover:rotate-x-[5deg] hover:shadow-xl">
+			<div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+			<img
+				src="https://d14d9vp3wdof84.cloudfront.net/image/589816272436/image_5qrqcjvcfp483b66bcf0s1677t/-S300-FWEBP"
+				alt="One Piece"
+				class="w-full h-full object-fill"
+			/>
+			<div class="absolute bottom-0 left-0 right-0 h-1 bg-base-300">
+				<div class="h-full bg-primary" style="width: 65%"></div>
+			</div>
+			<div class="absolute inset-0 flex flex-col justify-end p-3 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+				<h3 class="font-medium text-white">One Piece</h3>
+				<div class="flex items-center justify-between">
+					<span class="text-xs text-white/80">65% completo</span>
+					<span class="text-xs text-white/80">42/65 vol</span>
+				</div>
+			</div>
+		</div>
+	</div>
+}

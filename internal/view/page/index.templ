@@ -1,18 +1,45 @@
 package page
 
 import (
-	"akira/internal/view/layout"
+	"akira/internal/view/component"
+	"akira/internal/view/component/card"
 	"akira/internal/view/config/i18n/t"
+	"akira/internal/view/layout"
 )
 
 templ Index() {
 	@layout.Page("Home") {
-		<h1 class="text-4xl font-bold">@t.T("index.hello-world")</h1>
+		<h1 class="text-4xl font-bold">
+			@t.T("index.hello-world")
+		</h1>
 		<button hx-get="/error" hx-trigger="click" class="btn btn-error">
 			Testar Erro
 		</button>
 		<button hx-get="/auth/signout" class="btn btn-secondary">
 			Sair
 		</button>
+	}
+}
+
+templ Dashboard() {
+	@layout.Page("Dashboard") {
+		@component.ActionBar()
+		<section class="rounded-box p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-8 mb-6 mt-4">
+			for i := 0; i < 15; i++ {
+				@card.Card()
+			}
+			// @card.Card()
+		</section>
+		<div class="flex justify-center">
+			<div class="join">
+				<button class="join-item btn">«</button>
+				<button class="join-item btn btn-active">1</button>
+				<button class="join-item btn">2</button>
+				<button class="join-item btn">3</button>
+				<button class="join-item btn">99</button>
+				<button class="join-item btn">100</button>
+				<button class="join-item btn">»</button>
+			</div>
+		</div>
 	}
 }

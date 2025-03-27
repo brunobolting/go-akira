@@ -18,7 +18,7 @@ templ header(title string) {
 templ Layout(title string) {
 	<html lang={ t.PreferredLocale(ctx) } data-theme={ theme.PreferredTheme(ctx) }>
 		@header(title)
-		<body class="antialiased transition-colors duration-300">
+		<body class="antialiased transition-colors duration-300 bg-base-200">
 			<div class="">
 				{ children... }
 			</div>

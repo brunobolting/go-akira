@@ -17,7 +17,7 @@ func Make(ctx context.Context, db *sql.DB, logger entity.Logger) (entity.Session
 		Cookie: &entity.CookieConfig{
 			Name:     entity.COOKIE_NAME,
 			Path:     "/",
-			MaxAge:   86400,
+			MaxAge:   86400 * 30 * 6,
 			Secure:   true,
 			HttpOnly: true,
 			SameSite: http.SameSiteLaxMode,

@@ -7,7 +7,7 @@ import (
 )
 
 func (h *Handler) handleIndexPage(w http.ResponseWriter, r *http.Request) error {
-	return Render(w, r, page.Index())
+	return Render(w, r, page.Dashboard())
 }
 
 func (h *Handler) handleSignUpPage(w http.ResponseWriter, r *http.Request) error {
