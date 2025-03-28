@@ -57,3 +57,6 @@ en:
       unauthorized: Account unauthorized
     auth:
       invalid-email-or-pass: E-mail or password is invalid
+    collection:
+      invalid-name: Invalid collection name
+      name-too-long: Collection name is too long

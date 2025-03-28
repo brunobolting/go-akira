@@ -57,3 +57,6 @@ pt-BR:
       unauthorized: Conta não autorizada
     auth:
       invalid-email-or-pass: E-mail ou senha inválidos
+    collection:
+      invalid-name: Nome da coleção é inválido
+      name-too-long: Nome da coleção é muito longo

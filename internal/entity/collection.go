@@ -97,3 +97,70 @@ type CollectionBook struct {
 	BookID       string
 	CreatedAt    time.Time
 }
+
+type CreateCollectionRequest struct {
+	Name            string
+	Edition         string
+	Author          []string
+	Publisher       string
+	Tags            []string
+	Metadata        map[string]string
+	ScrapingSites   []ScrapingSite
+	ScrapingOptions ScrapingOptions
+	Language        string
+}
+
+func (r *CreateCollectionRequest) Validate() error {
+	var e RequestError
+	if r.Name == "" {
+		e = e.Add("name", ErrCollectionNameInvalid.Error())
+	}
+	if len(r.Name) > 255 {
+		e = e.Add("name", ErrCollectionNameTooLong.Error())
+	}
+	return e
+}
+
+func NewCollection(
+	userID string,
+	name string,
+	edition string,
+	slug string,
+	author []string,
+	publisher string,
+	language string,
+	tags []string,
+	metadata map[string]string,
+	scrapingSites []ScrapingSite,
+	scrapingOptions ScrapingOptions,
+) *Collection {
+	return &Collection{
+		ID:              NewID(),
+		Name:            name,
+		Edition:         edition,
+		Slug:            slug,
+		UserID:          userID,
+		Author:          author,
+		Publisher:       publisher,
+		Tags:            tags,
+		Metadata:        metadata,
+		ReleaseStatus:   ReleaseStatusOnGoing,
+		SyncStatus:      SyncStatusPending,
+		ScrapingSites:   scrapingSites,
+		TotalVolumes:    0,
+		ScrapingOptions: scrapingOptions,
+		Language:        language,
+		LastSync:        time.Now(),
+		CreatedAt:       time.Now(),
+		UpdatedAt:       time.Now(),
+	}
+}
+
+type CollectionService interface {
+	CreateCollection(userID string, req CreateCollectionRequest) (*Collection, error)
+}
+
+type CollectionRepository interface {
+	CreateCollection(collection *Collection) error
+	FindCollectionBySlug(userID, slug string) (*Collection, error)
+}
