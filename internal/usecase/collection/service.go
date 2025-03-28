@@ -2,18 +2,25 @@ package collection
 
 import (
 	"akira/internal/entity"
+	"context"
 	"fmt"
 )
 
 var _ entity.CollectionService = (*Service)(nil)
 
 type Service struct {
-	repo entity.CollectionRepository
+	repo   entity.CollectionRepository
+	event  entity.EventService
+	ctx    context.Context
+	logger entity.Logger
 }
 
-func NewService(repo entity.CollectionRepository) *Service {
+func NewService(ctx context.Context, repo entity.CollectionRepository, event entity.EventService, logger entity.Logger) *Service {
 	return &Service{
-		repo: repo,
+		repo:   repo,
+		event:  event,
+		ctx:    ctx,
+		logger: logger,
 	}
 }
 
@@ -41,7 +48,11 @@ func (s *Service) CreateCollection(userID string, req entity.CreateCollectionReq
 	if err := s.repo.CreateCollection(collection); err != nil {
 		return nil, err
 	}
-	// todo: send event and queue sync
+	s.event.Publish(entity.NewEvent(
+		entity.EventCollectionCreated,
+		userID,
+		collection,
+	))
 	return collection, nil
 }
 
