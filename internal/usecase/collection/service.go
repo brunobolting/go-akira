@@ -35,8 +35,8 @@ func (s *Service) CreateCollection(userID string, req entity.CreateCollectionReq
 		req.Language,
 		req.Tags,
 		req.Metadata,
-		req.ScrapingSites,
-		req.ScrapingOptions,
+		req.CrawlerDataSource,
+		req.CrawlerOptions,
 	)
 	if err := s.repo.CreateCollection(collection); err != nil {
 		return nil, err

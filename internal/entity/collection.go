@@ -20,7 +20,7 @@ const (
 	SyncStatusFailed   SyncStatus = "failed"
 )
 
-type ScrapingSite struct {
+type CrawlerDataSource struct {
 	ID        string
 	Name      string
 	URL       map[string]string
@@ -29,7 +29,7 @@ type ScrapingSite struct {
 	UpdatedAt time.Time
 }
 
-type ScrapingOptions struct {
+type CrawlerOptions struct {
 	AutoSync        bool
 	TrackPrice      bool
 	TrackNewVolumes bool
@@ -37,27 +37,27 @@ type ScrapingOptions struct {
 }
 
 type Collection struct {
-	ID              string
-	Name            string
-	Edition         string
-	Slug            string
-	UserID          string
-	Author          []string
-	Publisher       string
-	Tags            []string
-	Metadata        map[string]string
-	ReleaseStatus   ReleaseStatus
-	SyncStatus      SyncStatus
-	ScrapingSites   []ScrapingSite
-	TotalVolumes    int
-	ScrapingOptions ScrapingOptions
-	Language        string
-	LastSync        time.Time
-	CreatedAt       time.Time
-	UpdatedAt       time.Time
+	ID                string
+	Name              string
+	Edition           string
+	Slug              string
+	UserID            string
+	Author            []string
+	Publisher         string
+	Tags              []string
+	Metadata          map[string]string
+	ReleaseStatus     ReleaseStatus
+	SyncStatus        SyncStatus
+	CrawlerDataSource []CrawlerDataSource
+	TotalVolumes      int
+	CrawlerOptions    CrawlerOptions
+	Language          string
+	LastSync          time.Time
+	CreatedAt         time.Time
+	UpdatedAt         time.Time
 }
 
-type ScrapingReview struct {
+type ContentReview struct {
 	ID        string
 	VolumeID  string
 	Author    string
@@ -79,7 +79,7 @@ type Book struct {
 	PageCount   int
 	Volume      *int
 	Rating      float64
-	Reviews     []ScrapingReview
+	Reviews     []ContentReview
 	Publisher   string
 	Author      []string
 	UserID      string
@@ -99,15 +99,15 @@ type CollectionBook struct {
 }
 
 type CreateCollectionRequest struct {
-	Name            string
-	Edition         string
-	Author          []string
-	Publisher       string
-	Tags            []string
-	Metadata        map[string]string
-	ScrapingSites   []ScrapingSite
-	ScrapingOptions ScrapingOptions
-	Language        string
+	Name              string
+	Edition           string
+	Author            []string
+	Publisher         string
+	Tags              []string
+	Metadata          map[string]string
+	CrawlerDataSource []CrawlerDataSource
+	CrawlerOptions    CrawlerOptions
+	Language          string
 }
 
 func (r *CreateCollectionRequest) Validate() error {
@@ -131,28 +131,28 @@ func NewCollection(
 	language string,
 	tags []string,
 	metadata map[string]string,
-	scrapingSites []ScrapingSite,
-	scrapingOptions ScrapingOptions,
+	dataSource []CrawlerDataSource,
+	opts CrawlerOptions,
 ) *Collection {
 	return &Collection{
-		ID:              NewID(),
-		Name:            name,
-		Edition:         edition,
-		Slug:            slug,
-		UserID:          userID,
-		Author:          author,
-		Publisher:       publisher,
-		Tags:            tags,
-		Metadata:        metadata,
-		ReleaseStatus:   ReleaseStatusOnGoing,
-		SyncStatus:      SyncStatusPending,
-		ScrapingSites:   scrapingSites,
-		TotalVolumes:    0,
-		ScrapingOptions: scrapingOptions,
-		Language:        language,
-		LastSync:        time.Now(),
-		CreatedAt:       time.Now(),
-		UpdatedAt:       time.Now(),
+		ID:                NewID(),
+		Name:              name,
+		Edition:           edition,
+		Slug:              slug,
+		UserID:            userID,
+		Author:            author,
+		Publisher:         publisher,
+		Tags:              tags,
+		Metadata:          metadata,
+		ReleaseStatus:     ReleaseStatusOnGoing,
+		SyncStatus:        SyncStatusPending,
+		CrawlerDataSource: dataSource,
+		TotalVolumes:      0,
+		CrawlerOptions:    opts,
+		Language:          language,
+		LastSync:          time.Now(),
+		CreatedAt:         time.Now(),
+		UpdatedAt:         time.Now(),
 	}
 }
 
