@@ -61,6 +61,36 @@ func (l *SentryLogger) Error(ctx context.Context, msg string, err error, args ma
 	})
 }
 
+func (l *SentryLogger) Warn(ctx context.Context, msg string, args map[string]any) {
+	if args == nil {
+		args = make(map[string]any)
+	}
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		args["file"] = file
+		args["line"] = line
+	}
+	sentry.WithScope(func(scope *sentry.Scope) {
+		scope.SetContext("args", args)
+		sentry.CaptureMessage(msg)
+	})
+}
+
+func (l *SentryLogger) Debug(ctx context.Context, msg string, args map[string]any) {
+	if args == nil {
+		args = make(map[string]any)
+	}
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		args["file"] = file
+		args["line"] = line
+	}
+	sentry.WithScope(func(scope *sentry.Scope) {
+		scope.SetContext("args", args)
+		sentry.CaptureMessage(msg)
+	})
+}
+
 func (l *SentryLogger) Close() {
 	sentry.Flush(2 * time.Second)
 }

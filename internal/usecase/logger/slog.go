@@ -51,4 +51,36 @@ func (l *SlogLogger) Error(ctx context.Context, msg string, err error, args map[
 	l.logger.ErrorContext(ctx, msg, attrs...)
 }
 
+func (l *SlogLogger) Warn(ctx context.Context, msg string, args map[string]any) {
+	if args == nil {
+		args = make(map[string]any)
+	}
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		args["file"] = file
+		args["line"] = line
+	}
+	attrs := make([]any, 0, len(args)*2)
+	for k, v := range args {
+		attrs = append(attrs, k, v)
+	}
+	l.logger.WarnContext(ctx, msg, attrs...)
+}
+
+func (l *SlogLogger) Debug(ctx context.Context, msg string, args map[string]any) {
+	if args == nil {
+		args = make(map[string]any)
+	}
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		args["file"] = file
+		args["line"] = line
+	}
+	attrs := make([]any, 0, len(args)*2)
+	for k, v := range args {
+		attrs = append(attrs, k, v)
+	}
+	l.logger.DebugContext(ctx, msg, attrs...)
+}
+
 func (l *SlogLogger) Close() {}

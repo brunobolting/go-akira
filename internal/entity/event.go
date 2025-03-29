@@ -14,6 +14,9 @@ const (
 	EventCollectionSyncFetching  EventType = "collection:sync-fetching"
 	EventCollectionSyncCompleted EventType = "collection:sync-completed"
 	EventCollectionSyncFailed    EventType = "collection:sync-failed"
+	EventSystemStarted           EventType = "system:started"
+	EventSystemShutdown          EventType = "system:shutdown"
+	EventSystemError             EventType = "system:error"
 )
 
 type Event struct {
