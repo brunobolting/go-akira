@@ -26,10 +26,18 @@ func NewService(ctx context.Context, repo entity.CollectionRepository, event ent
 
 func (s *Service) CreateCollection(userID string, req entity.CreateCollectionRequest) (*entity.Collection, error) {
 	if err := req.Validate(); err != nil {
+		s.logger.Error(s.ctx, "CreateCollection: invalid request", err, map[string]any{
+			"userID": userID,
+			"req":    req,
+		})
 		return nil, err
 	}
 	slug, err := s.ensureUniqueSlug(userID, req.Name)
 	if err != nil {
+		s.logger.Error(s.ctx, "CreateCollection: ensureUniqueSlug failed", err, map[string]any{
+			"userID": userID,
+			"name":    req.Name,
+		})
 		return nil, err
 	}
 	collection := entity.NewCollection(
@@ -42,10 +50,14 @@ func (s *Service) CreateCollection(userID string, req entity.CreateCollectionReq
 		req.Language,
 		req.Tags,
 		req.Metadata,
-		req.CrawlerDataSource,
+		req.SyncSources,
 		req.CrawlerOptions,
 	)
 	if err := s.repo.CreateCollection(collection); err != nil {
+		s.logger.Error(s.ctx, "CreateCollection: CreateCollection failed", err, map[string]any{
+			"userID": userID,
+			"collection": collection,
+		})
 		return nil, err
 	}
 	s.event.Publish(entity.NewEvent(

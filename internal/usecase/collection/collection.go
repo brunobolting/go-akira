@@ -7,5 +7,6 @@ import (
 
 func Make(ctx context.Context, event entity.EventService, logger entity.Logger) entity.CollectionService {
 	// todo: add repo
-	return NewService(ctx, nil, event, logger)
+	memo := NewMemoRepository()
+	return NewService(ctx, memo, event, logger)
 }
