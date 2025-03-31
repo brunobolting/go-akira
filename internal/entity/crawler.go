@@ -2,6 +2,9 @@ package entity
 
 import (
 	"context"
+	"regexp"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -69,4 +72,54 @@ type CrawlerService interface {
 type CrawlerConsumer interface {
 	ConsumeEvents()
 	Shutdown() error
+}
+
+func ExtractVolumeNumber(title string) int {
+	title = strings.ToLower(title)
+	patterns := []string{
+		`vol\D*(\d+)`,            // "Vol. 3", "Vol 3", "Vol-3"
+		`volume\D*(\d+)`,         // "Volume 3", "Volume: 3"
+		`\b(\d+)\D*vol`,          // "3 Vol", "3º Vol"
+		`#\s*(\d+)`,              // "#3", "# 3"
+		`\btomo\D*(\d+)`,         // "Tomo 3" (Spanish/Portuguese)
+		`\D(\d{1,2})\D*$`,        // Title ending with a number
+		`\D(\d{1,2})\D.*edition`, // "3rd edition" type patterns
+	}
+	for _, pattern := range patterns {
+		rx := regexp.MustCompile(pattern)
+		matches := rx.FindStringSubmatch(title)
+		if len(matches) > 1 {
+			if vol, err := strconv.Atoi(matches[1]); err == nil {
+				return vol
+			}
+		}
+	}
+	return 0
+}
+
+func ExtractSeriesTitle(title string) string {
+	patterns := []string{
+		`\bvol\.?\s*\d+`,
+		`\bvolume\s*\d+`,
+		`\btomo\s*\d+`,
+		`\#\d+`,
+		`\d+ª?\s*edição`,
+		`\bedition\b`,
+	}
+	cleanTitle := title
+	for _, pattern := range patterns {
+		rx := regexp.MustCompile(pattern)
+		cleanTitle = rx.ReplaceAllString(cleanTitle, "")
+	}
+	cleanTitle = strings.Trim(cleanTitle, " -:,.")
+	return cleanTitle
+}
+
+func CalculateSeriesSignature(result CrawledResult) string {
+	baseTitle := ExtractSeriesTitle(result.Title)
+	signature := strings.ToLower(baseTitle)
+	if result.Publisher != "" {
+		signature += "|" + strings.ToLower(result.Publisher)
+	}
+	return signature
 }

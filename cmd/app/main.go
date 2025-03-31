@@ -89,8 +89,8 @@ func run(ctx context.Context) error {
 
 func createCollection(service entity.CollectionService) {
 	req := entity.CreateCollectionRequest{
-		Name:         "One Piece 3 em 1",
-		Edition:      "Edição de Luxo",
+		Name:         "One-Punch Man",
+		Edition:      "",
 		SyncSources:  entity.SyncSources{"amazon"},
 		CrawlerOptions: entity.SyncOptions{
 			AutoSync:        true,
