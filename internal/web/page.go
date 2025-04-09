@@ -30,3 +30,10 @@ func (h *Handler) handleSignInPage(w http.ResponseWriter, r *http.Request) error
 		Password: "",
 	}, nil))
 }
+
+func (h *Handler) handleCreateCollectionPage(w http.ResponseWriter, r *http.Request) error {
+	if err := r.ParseForm(); err != nil {
+		return err
+	}
+	return Render(w, r, page.CreateCollection())
+}

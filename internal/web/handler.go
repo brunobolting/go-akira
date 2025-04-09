@@ -156,6 +156,7 @@ func (h *Handler) MakeRoutes() {
 	h.r.Route("/", func(r chi.Router) {
 		r.Use(MakeMiddleware(h.session.AuthenticationRequiredMiddleware, h.logger))
 		r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
+		r.Get("/collection/create", MakeHandler(h.handleCreateCollectionPage, h.logger))
 	})
 	h.r.Get("/error", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, i18n.T(r.Context(), "error.unexpected-error"), http.StatusInternalServerError)

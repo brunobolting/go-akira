@@ -3,7 +3,6 @@ package main
 import (
 	"akira/internal/config/env"
 	"akira/internal/db"
-	"akira/internal/entity"
 	"akira/internal/locale"
 	"akira/internal/server"
 	"akira/internal/usecase/auth"
@@ -69,7 +68,6 @@ func run(ctx context.Context) error {
 	book := book.Make(ctx, logger)
 	collection := collection.Make(ctx, event, logger)
 	_, consumer := crawler.Make(ctx, event, book, collection, logger)
-	go createCollection(collection)
 	app := chi.NewRouter()
 	web := web.NewHandler(app, userService, sessionService, auth, logger, i18n, theme, web.Options{
 		AllowedOrigins: []string{"same-origin"},
@@ -85,22 +83,4 @@ func run(ctx context.Context) error {
 		return consumer.Shutdown()
 	})
 	return s.Run()
-}
-
-func createCollection(service entity.CollectionService) {
-	req := entity.CreateCollectionRequest{
-		Name:         "One-Punch Man",
-		Edition:      "",
-		SyncSources:  entity.SyncSources{"amazon"},
-		CrawlerOptions: entity.SyncOptions{
-			AutoSync:        true,
-			TrackNewVolumes: true,
-		},
-	}
-	collection, err := service.CreateCollection("user_id", req)
-	if err != nil {
-		fmt.Println("Error creating collection:", err)
-		return
-	}
-	fmt.Println("Collection created:", collection)
 }
