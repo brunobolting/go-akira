@@ -15,10 +15,22 @@ pt-BR:
     or-signin: Ou entrar
     password-must-be: A senha deve ter mais de %d caracteres
 
+  dashboard:
+    action:
+      new-collection: Nova coleção
+      sort: Ordenar
+      filter: Filtrar
+
   common:
     name: Nome
     email: E-mail
     password: Senha
+    collections: Coleções
+    all: Todos
+
+  navbar:
+    search: Pesquisar
+    signout: Sair
 
   footer:
     terms-of-service: Termos de serviço

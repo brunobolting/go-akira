@@ -15,10 +15,22 @@ en:
     or-signin: Or sign in
     password-must-be: Password must be more than %d characters
 
+  dashboard:
+    action:
+      new-collection: Nova coleção
+      sort: Sort
+      filter: Filter
+
   common:
     name: Name
     email: E-mail
     password: Password
+    collections: Collections
+    all: All
+
+  navbar:
+    search: Pesquisar
+    signout: Signout
 
   footer:
     terms-of-service: Terms of service

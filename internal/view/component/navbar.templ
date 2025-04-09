@@ -1,6 +1,9 @@
 package component
 
-import "akira/internal/view/component/icon"
+import (
+	"akira/internal/view/component/icon"
+	"akira/internal/view/config/i18n/t"
+)
 
 templ Navbar() {
 	<div class="navbar shadow-sm h-12">
@@ -47,7 +50,7 @@ templ Navbar() {
 			<div class="navbar-end gap-2">
 				<label class="input input-bordered input-md">
 					@icon.Search()
-					<input type="search" placeholder="Search..." class="grow"/>
+					<input type="search" placeholder={ t.TS(ctx, "navbar.search") + "..." } class="grow"/>
 				</label>
 				<div class="dropdown dropdown-end">
 					<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
@@ -70,7 +73,9 @@ templ Navbar() {
 						</li>
 						<li><a>Settings</a></li>
 						<li>
-							<a hx-get="/auth/signout">Logout</a>
+							<a hx-get="/auth/signout">
+								@t.T("navbar.signout")
+							</a>
 						</li>
 					</ul>
 				</div>

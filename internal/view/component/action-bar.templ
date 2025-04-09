@@ -1,12 +1,19 @@
 package component
 
-import "akira/internal/view/component/icon"
+import (
+	"akira/internal/view/component/icon"
+	"akira/internal/view/config/i18n/t"
+)
 
 templ ActionBar() {
 	<div class="flex justify-between content-center bg-base-100 p-2 mt-4 rounded-box shadow">
 		<div role="tablist" class="tabs tabs-border content-center">
-			<a role="tab" class="tab tab-active">Collections</a>
-			<a role="tab" class="tab">All</a>
+			<a role="tab" class="tab tab-active">
+				@t.T("common.collections")
+			</a>
+			<a role="tab" class="tab">
+				@t.T("common.all")
+			</a>
 		</div>
 		<div class="gap-2">
 			<ul class="menu menu-horizontal p-0 gap-2 content-center">
@@ -14,7 +21,7 @@ templ ActionBar() {
 					<div class="dropdown dropdown-end p-0">
 						<div tabindex="0" role="button" class="btn btn-ghost">
 							@icon.Filter()
-							Filter
+							@t.T("dashboard.action.filter")
 						</div>
 						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
 							<li><a>Manga</a></li>
@@ -30,7 +37,7 @@ templ ActionBar() {
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
 							</svg>
-							Sort
+							@t.T("dashboard.action.sort")
 						</div>
 						<ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
 							<li><a>Recently Added</a></li>
@@ -40,10 +47,10 @@ templ ActionBar() {
 					</div>
 				</li>
 				<li>
-					<button class="btn btn-primary">
+					<a class="btn btn-primary" href="/collection/create">
 						@icon.Plus()
-						Add item
-					</button>
+						@t.T("dashboard.action.new-collection")
+					</a>
 				</li>
 			</ul>
 		</div>

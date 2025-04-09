@@ -4,10 +4,12 @@ import "akira/internal/view/component"
 
 templ Page(title string) {
 	@Layout(title) {
-		@component.Navbar()
-		<div class="container max-w-6xl mx-auto mb-12">
-			{ children... }
+		<div class="flex flex-col min-h-screen">
+			@component.Navbar()
+			<div class="container max-w-6xl mx-auto mb-12 flex-grow">
+				{ children... }
+			</div>
+			@component.Footer()
 		</div>
-		@component.Footer()
 	}
 }
