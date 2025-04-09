@@ -128,8 +128,8 @@ func (c *Consumer) handleCollectionCreated(event entity.Event) {
 	opts := entity.CrawlerOptions{
 		MaxPages:        50,
 		Timeout:         3 * time.Minute,
-		MaxConcurrency:  5,
-		RequestInterval: 1 * time.Second,
+		MaxConcurrency:  2,
+		RequestInterval: 3 * time.Second,
 	}
 
 	req := entity.CrawlerRequest{

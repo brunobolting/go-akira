@@ -31,6 +31,7 @@ func NewService(
 		ctx:       ctx,
 	}
 	service.RegisterProvider(provider.NewAmazonProvider())
+	service.RegisterProvider(provider.NewPaniniProvider())
 	return service
 }
 
@@ -116,14 +117,28 @@ func (s *Service) FetchCollection(ctx context.Context, req entity.CrawlerRequest
 			wg.Wait()
 			close(resultsChan)
 			close(errChan)
+			s.logger.Debug(crawlerCtx, "all providers finished", nil)
 		}()
 		var results []entity.CrawledResult
 		for result := range resultsChan {
 			results = append(results, result)
+			s.logger.Debug(crawlerCtx, "received result", map[string]any{
+				"title":  result.Title,
+				"volume": result.Volume,
+				"source": result.Source,
+			})
 		}
+
+		s.logger.Info(crawlerCtx, "collected results from channel", map[string]any{
+			"result_count": len(results),
+		})
+
 		var errors []error
 		for err := range errChan {
 			errors = append(errors, err)
+			s.logger.Debug(crawlerCtx, "received error", map[string]any{
+				"error": err.Error(),
+			})
 		}
 		s.results.Store(req.CollectionID, results)
 		if len(errors) > 0 && len(results) == 0 {
