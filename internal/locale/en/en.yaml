@@ -20,6 +20,28 @@ en:
       new-collection: Nova coleção
       sort: Sort
       filter: Filter
+      back-to-dashboard: Back to dashboard
+
+  collection:
+    create-new-collection: Create New Collection
+    title: Title
+    slug: Slug
+    num-volumes: Number of volumes
+    volumes: Volumes
+    crawler-options: Crawler options
+    auto-sync: Auto-sync
+    auto-sync-description: Sync data with internet automaticaly
+    track-price-change: Track price change
+    track-price-change-description: Be notified when the price drops for missing volumes
+    track-new-releases: Track new releases
+    track-new-releases-description: Be notified when new volumes are released
+    track-reviews: Track reviews
+    track-reviews-description: Import reviews from customers on searched sites
+    search-terms: Search terms
+    search-terms-detail: add keywords separated by Enter
+    action:
+      cancel: Cancel
+      create-collection: Create collection
 
   common:
     name: Name
@@ -27,6 +49,8 @@ en:
     password: Password
     collections: Collections
     all: All
+    optional: Optional
+    add: Add
 
   navbar:
     search: Pesquisar

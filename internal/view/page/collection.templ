@@ -1,17 +1,22 @@
 package page
 
-import "akira/internal/view/layout"
+import (
+	"akira/internal/view/layout"
+	"akira/internal/view/config/i18n/t"
+)
 
 templ CreateCollection() {
 	@layout.Page("Create Collection") {
 		<div class="container mx-auto px-4 py-6">
 			<div class="flex items-center justify-between mb-6">
-				<h1 class="text-2xl font-bold">Create New Collection</h1>
+				<h1 class="text-2xl font-bold">
+					@t.T("collection.create-new-collection")
+				</h1>
 				<a href="/" class="btn btn-outline btn-sm">
 					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
 					</svg>
-					Back to Dashboard
+					@t.T("dashboard.action.back-to-dashboard")
 				</a>
 			</div>
 			<div class="bg-base-100 rounded-lg shadow-sm p-6">
@@ -20,11 +25,13 @@ templ CreateCollection() {
 						<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 							<div class="form-control w-full">
 								<fieldset class="fieldset">
-									<legend class="fieldset-legend">Title</legend>
+									<legend class="fieldset-legend">
+										@t.T("collection.title")
+									</legend>
 									<input
 										type="text"
 										class="input"
-										placeholder="Type here"
+										placeholder="E.g. One Piece, Chainsaw Man"
 										autofocus
 										hx-post="/collection/generate-slug"
 										hx-target="#slug-preview"
@@ -32,58 +39,85 @@ templ CreateCollection() {
 									/>
 								</fieldset>
 							</div>
-							<div class="form-control w-full">
-								<fieldset class="fieldset">
-									<legend class="fieldset-legend">Slug</legend>
-									<input type="text" class="input" placeholder="Type here" id="slug-field" />
-								</fieldset>
-							</div>
 							<div>
 								<fieldset class="fieldset">
-									<legend class="fieldset-legend">Nº Volumes <spam class="fieldset-label">(optional)</spam></legend>
-									<input type="number" class="input" placeholder="Type here" />
+									<legend class="fieldset-legend">
+										@t.T("collection.num-volumes")
+										<spam class="fieldset-label">({ t.TS(ctx, "common.optional") })</spam>
+									</legend>
+									<input type="number" class="input" placeholder="Nº" />
+								</fieldset>
+							</div>
+							<div class="form-control w-full">
+								<fieldset class="fieldset">
+									<legend class="fieldset-legend">
+										@t.T("collection.slug")
+									</legend>
+									<input type="text" class="input" placeholder="" id="slug-field" />
 								</fieldset>
 							</div>
 						</div>
 						<div class="form-control w-full mt-4">
 							<label class="label">
-								<span class="label-text font-medium">Crawler Options</span>
+								<span class="label-text font-medium">
+									@t.T("collection.crawler-options")
+								</span>
 							</label>
 							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
 								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
 									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
 									<div>
-										<span class="label-text text-sm font-medium block">Auto Sync</span>
-										<span class="text-xs text-base-content/70 text-wrap">Sync data with internet automaticaly</span>
+										<span class="label-text text-sm font-medium block">
+											@t.T("collection.auto-sync")
+										</span>
+										<span class="text-xs text-base-content/70 text-wrap">
+											@t.T("collection.auto-sync-description")
+										</span>
 									</div>
 								</label>
 								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
 									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
 									<div>
-										<span class="label-text text-sm font-medium block">Track price changes</span>
-										<span class="text-xs text-base-content/70 text-wrap">Get notified when prices drop for missing volumes</span>
+										<span class="label-text text-sm font-medium block">
+											@t.T("collection.track-price-change")
+										</span>
+										<span class="text-xs text-base-content/70 text-wrap">
+											@t.T("collection.track-price-change-description")
+										</span>
 									</div>
 								</label>
 								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
 									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
 									<div>
-										<span class="label-text text-sm font-medium block">Track new releases</span>
-										<span class="text-xs text-base-content/70 text-wrap">Get notified when new volumes are released</span>
+										<span class="label-text text-sm font-medium block">
+											@t.T("collection.track-new-releases")
+										</span>
+										<span class="text-xs text-base-content/70 text-wrap">
+											@t.T("collection.track-new-releases-description")
+										</span>
 									</div>
 								</label>
 								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
 									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
 									<div>
-										<span class="label-text text-sm font-medium block">Track reviews</span>
-										<span class="text-xs text-base-content/70 text-wrap">Import reviews from customers on searched sites</span>
+										<span class="label-text text-sm font-medium block">
+											@t.T("collection.track-reviews")
+										</span>
+										<span class="text-xs text-base-content/70 text-wrap">
+											@t.T("collection.track-reviews-description")
+										</span>
 									</div>
 								</label>
 							</div>
 						</div>
 						<div class="form-control w-full mt-4">
 							<label class="label">
-								<span class="label-text font-medium">Search Terms</span>
-								<span class="label-text-alt">Add multiple, separated by Enter</span>
+								<span class="label-text font-medium">
+									@t.T("collection.search-terms")
+								</span>
+								<span class="label-text-alt text-sm">
+									@t.T("collection.search-terms-detail")
+								</span>
 							</label>
 							<div class="flex items-start gap-2">
 								<div class="flex-1">
@@ -94,16 +128,16 @@ templ CreateCollection() {
 										class="input input-bordered w-full"
 										onkeydown="addSearchTermOnEnter(event)"
 									/>
-									<label class="label">
-										<span class="label-text-alt">Different versions of the title, author names, etc.</span>
-									</label>
+									// <label class="label">
+									// 	<span class="label-text-alt">Different versions of the title, author names, etc.</span>
+									// </label>
 								</div>
 								<button
 									type="button"
 									class="btn btn-outline"
 									onclick="addSearchTerm()"
 								>
-									Add
+									@t.T("common.add")
 								</button>
 							</div>
 							<div id="search-terms-container" class="flex flex-wrap gap-2 mt-2">
@@ -115,10 +149,10 @@ templ CreateCollection() {
 					<div class="border-t border-base-300 pt-6 mt-6">
 						<div class="flex justify-end gap-3">
 							<button type="button" class="btn btn-outline" onclick="window.history.back();">
-								Cancel
+								@t.T("collection.action.cancel")
 							</button>
 							<button type="submit" class="btn btn-primary">
-								Create Collection
+								@t.T("collection.action.create-collection")
 							</button>
 						</div>
 					</div>

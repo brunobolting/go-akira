@@ -20,6 +20,28 @@ pt-BR:
       new-collection: Nova coleção
       sort: Ordenar
       filter: Filtrar
+      back-to-dashboard: Voltar ao painel
+
+  collection:
+    create-new-collection: Criar Nova Coleção
+    title: Título
+    slug: Slug
+    num-volumes: Número de volumes
+    volumes: Volumes
+    crawler-options: Opções de rastreamento
+    auto-sync: Sincronização automática
+    auto-sync-description: Sincronização automática com sites da internet
+    track-price-change: Rastrear mudanças de preço
+    track-price-change-description: Seja notificado quando o preço baixar para volumes faltantes
+    track-new-releases: Rastrear novos lançamentos
+    track-new-releases-description: Seja notificado quando novos volumes forem lançados
+    track-reviews: Rastrear avaliações
+    track-reviews-description: Importar avaliações de sites da internet
+    search-terms: Termos de pesquisa
+    search-terms-detail: adicione palavras-chave separadas por Enter
+    action:
+      cancel: Cancelar
+      create-collection: Criar coleção
 
   common:
     name: Nome
@@ -27,6 +49,8 @@ pt-BR:
     password: Senha
     collections: Coleções
     all: Todos
+    optional: Opcional
+    add: Adicionar
 
   navbar:
     search: Pesquisar
