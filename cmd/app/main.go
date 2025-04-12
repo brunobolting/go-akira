@@ -66,7 +66,7 @@ func run(ctx context.Context) error {
 	auth := auth.Make(ctx, userService, logger)
 	event := event.Make(ctx, logger)
 	book := book.Make(ctx, logger)
-	collection := collection.Make(ctx, event, logger)
+	collection := collection.Make(ctx, sqlite, event, logger)
 	_, consumer := crawler.Make(ctx, event, book, collection, logger)
 	app := chi.NewRouter()
 	web := web.NewHandler(app, userService, sessionService, auth, logger, i18n, theme, web.Options{
