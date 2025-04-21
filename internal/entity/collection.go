@@ -59,6 +59,7 @@ type CollectionBook struct {
 
 type CreateCollectionRequest struct {
 	Name           string
+	TotalVolumes   int
 	Edition        string
 	Author         []string
 	Publisher      string
@@ -86,6 +87,7 @@ func (r *CreateCollectionRequest) Validate() error {
 func NewCollection(
 	userID string,
 	name string,
+	totalVolumes int,
 	edition string,
 	slug string,
 	author []string,
@@ -109,7 +111,7 @@ func NewCollection(
 		ReleaseStatus:  ReleaseStatusOnGoing,
 		SyncStatus:     SyncStatusPending,
 		SyncSources:    syncSources,
-		TotalVolumes:   0,
+		TotalVolumes:   totalVolumes,
 		CrawlerOptions: opts,
 		Language:       language,
 		LastSync:       time.Now(),

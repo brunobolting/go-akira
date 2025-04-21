@@ -35,5 +35,5 @@ func (h *Handler) handleCreateCollectionPage(w http.ResponseWriter, r *http.Requ
 	if err := r.ParseForm(); err != nil {
 		return err
 	}
-	return Render(w, r, page.CreateCollection())
+	return Render(w, r, page.CreateCollection(form.CreateCollectionProps{}, nil))
 }

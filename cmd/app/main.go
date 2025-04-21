@@ -69,7 +69,7 @@ func run(ctx context.Context) error {
 	collection := collection.Make(ctx, sqlite, event, logger)
 	_, consumer := crawler.Make(ctx, event, book, collection, logger)
 	app := chi.NewRouter()
-	web := web.NewHandler(app, userService, sessionService, auth, logger, i18n, theme, web.Options{
+	web := web.NewHandler(app, userService, sessionService, auth, logger, i18n, theme, collection, web.Options{
 		AllowedOrigins: []string{"same-origin"},
 	})
 	s := server.NewServer(ctx, "", env.PORT, web, logger)

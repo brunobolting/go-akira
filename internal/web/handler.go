@@ -32,14 +32,15 @@ type Options struct {
 }
 
 type Handler struct {
-	r       *chi.Mux
-	mu      *sync.Mutex
-	user    entity.UserService
-	session entity.SessionService
-	auth    entity.AuthService
-	logger  entity.Logger
-	i18n    entity.I18nService
-	theme   entity.ThemeService
+	r          *chi.Mux
+	mu         *sync.Mutex
+	user       entity.UserService
+	session    entity.SessionService
+	auth       entity.AuthService
+	logger     entity.Logger
+	i18n       entity.I18nService
+	theme      entity.ThemeService
+	collection entity.CollectionService
 }
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -119,17 +120,19 @@ func NewHandler(
 	logger entity.Logger,
 	i18n entity.I18nService,
 	theme entity.ThemeService,
+	collection entity.CollectionService,
 	opts Options,
 ) *Handler {
 	h := &Handler{
-		r:       r,
-		mu:      &sync.Mutex{},
-		user:    user,
-		session: session,
-		auth:    auth,
-		logger:  logger,
-		i18n:    i18n,
-		theme:   theme,
+		r:          r,
+		mu:         &sync.Mutex{},
+		user:       user,
+		session:    session,
+		auth:       auth,
+		logger:     logger,
+		i18n:       i18n,
+		theme:      theme,
+		collection: collection,
 	}
 	h.r.Use(chi_middleware.Logger)
 	h.r.Use(chi_middleware.RequestID, chi_middleware.Recoverer)
@@ -157,6 +160,7 @@ func (h *Handler) MakeRoutes() {
 		r.Use(MakeMiddleware(h.session.AuthenticationRequiredMiddleware, h.logger))
 		r.Get("/", MakeHandler(h.handleIndexPage, h.logger))
 		r.Get("/collection/create", MakeHandler(h.handleCreateCollectionPage, h.logger))
+		r.Post("/collection/create", MakeHandler(h.handleCreateCollectionRequest, h.logger))
 	})
 	h.r.Get("/error", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, i18n.T(r.Context(), "error.unexpected-error"), http.StatusInternalServerError)

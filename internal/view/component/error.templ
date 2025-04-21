@@ -1,6 +1,9 @@
 package component
 
-import "akira/internal/view/component/icon"
+import (
+	"akira/internal/view/component/icon"
+	"akira/internal/view/config/i18n/t"
+)
 
 
 templ Error(message string) {
@@ -15,6 +18,9 @@ templ GlobalError() {
 		<div id="toast-container" class="fixed top-5 right-5 z-50 flex gap-2 hidden alert alert-error cursor-pointer px-4 py-2 rounded shadow-lg transition-opacity duration-300 opacity-100">
 			@icon.WarningTriagle()
 		</div>
+		<spam id="default-err-message" class="hidden">
+			@t.T("error.unexpected-error")
+		</spam>
 		<script>
 			const params = new URLSearchParams(window.location.search)
 			if (params.has("error")) {
@@ -23,7 +29,7 @@ templ GlobalError() {
 			}
 
 			document.body.addEventListener('htmx:responseError', function(event) {
-				const message = event.detail.xhr.responseText || "An error occurred"
+				const message = event.detail.xhr.responseText || document.getElementById("default-err-message").innerText.trim()
 				showToast(message)
 			});
 

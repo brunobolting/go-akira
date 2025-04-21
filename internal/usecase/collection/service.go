@@ -36,13 +36,14 @@ func (s *Service) CreateCollection(userID string, req entity.CreateCollectionReq
 	if err != nil {
 		s.logger.Error(s.ctx, "CreateCollection: ensureUniqueSlug failed", err, map[string]any{
 			"userID": userID,
-			"name":    req.Name,
+			"name":   req.Name,
 		})
 		return nil, err
 	}
 	collection := entity.NewCollection(
 		userID,
 		req.Name,
+		req.TotalVolumes,
 		req.Edition,
 		slug,
 		req.Author,

@@ -16,10 +16,10 @@ templ SignIn(v SignInProps, err *entity.RequestError) {
 	<form hx-post="/auth/signin">
 		<div class="card-body gap-4 pt-1">
 			<div class="flex flex-col gap-1">
-				@field.Email(v.Email, err)
+				@field.UserEmail(v.Email, err)
 			</div>
 			<div class="flex flex-col gap-1">
-				@field.Password(v.Password, "0", err)
+				@field.UserPassword(v.Password, "0", err)
 			</div>
 			@captcha.CloudflareCaptcha(err)
 			if err != nil && len(*err) > 0 {

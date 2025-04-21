@@ -17,13 +17,13 @@ templ SignUp(v SignUpProps, err *entity.RequestError) {
 	<form hx-post="/auth/signup">
 		<div class="card-body gap-4 pt-1">
 			<div class="flex flex-col gap-1">
-				@field.Name(v.Name, err)
+				@field.UserName(v.Name, err)
 			</div>
 			<div class="flex flex-col gap-1">
-				@field.Email(v.Email, err)
+				@field.UserEmail(v.Email, err)
 			</div>
 			<div class="flex flex-col gap-1">
-				@field.Password(v.Password, "8", err)
+				@field.UserPassword(v.Password, "8", err)
 				// <span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
 				// 	<span class="status status-error inline-block"></span> @t.T("signup.password-must-be", 8)
 				// </span>

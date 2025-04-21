@@ -1,0 +1,29 @@
+package field
+
+import (
+	"akira/internal/entity"
+	"akira/internal/view/config/i18n/t"
+)
+
+func removeErr(err *entity.RequestError, field string) {
+	if _, exists := (*err)[field]; exists {
+		delete(*err, field)
+	}
+}
+
+templ FieldError(err *entity.RequestError, field string) {
+	if err == nil {
+		{{ return }}
+	}
+	if fieldErrs, exists := (*err)[field]; exists && len(fieldErrs) > 0 {
+		<div class="text-error text-[0.6875rem] mt-1">
+			for _, msg := range fieldErrs {
+				<span class="text-base-content/60 flex items-center gap-2 px-1 text-[0.6875rem]">
+					<span class="status status-error inline-block"></span>
+					{ t.TS(ctx, msg) }
+				</span>
+			}
+		</div>
+	}
+	{{ removeErr(err, field) }}
+}

@@ -3,9 +3,11 @@ package page
 import (
 	"akira/internal/view/layout"
 	"akira/internal/view/config/i18n/t"
+	"akira/internal/view/component/form"
+	"akira/internal/entity"
 )
 
-templ CreateCollection() {
+templ CreateCollection(v form.CreateCollectionProps, err *entity.RequestError) {
 	@layout.Page("Create Collection") {
 		<div class="container mx-auto px-4 py-6">
 			<div class="flex items-center justify-between mb-6">
@@ -20,195 +22,8 @@ templ CreateCollection() {
 				</a>
 			</div>
 			<div class="bg-base-100 rounded-lg shadow-sm p-6">
-				<form hx-post="/collection/create" hx-swap="outerHTML" class="space-y-8">
-					<div>
-						<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-							<div class="form-control w-full">
-								<fieldset class="fieldset">
-									<legend class="fieldset-legend">
-										@t.T("collection.title")
-									</legend>
-									<input
-										type="text"
-										class="input"
-										placeholder="E.g. One Piece, Chainsaw Man"
-										autofocus
-										hx-post="/collection/generate-slug"
-										hx-target="#slug-preview"
-										hx-trigger="keyup changed delay:500ms"
-									/>
-								</fieldset>
-							</div>
-							<div>
-								<fieldset class="fieldset">
-									<legend class="fieldset-legend">
-										@t.T("collection.num-volumes")
-										<spam class="fieldset-label">({ t.TS(ctx, "common.optional") })</spam>
-									</legend>
-									<input type="number" class="input" placeholder="Nº" />
-								</fieldset>
-							</div>
-							<div class="form-control w-full">
-								<fieldset class="fieldset">
-									<legend class="fieldset-legend">
-										@t.T("collection.slug")
-									</legend>
-									<input type="text" class="input" placeholder="" id="slug-field" />
-								</fieldset>
-							</div>
-						</div>
-						<div class="form-control w-full mt-4">
-							<label class="label">
-								<span class="label-text font-medium">
-									@t.T("collection.crawler-options")
-								</span>
-							</label>
-							<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
-								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
-									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
-									<div>
-										<span class="label-text text-sm font-medium block">
-											@t.T("collection.auto-sync")
-										</span>
-										<span class="text-xs text-base-content/70 text-wrap">
-											@t.T("collection.auto-sync-description")
-										</span>
-									</div>
-								</label>
-								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
-									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
-									<div>
-										<span class="label-text text-sm font-medium block">
-											@t.T("collection.track-price-change")
-										</span>
-										<span class="text-xs text-base-content/70 text-wrap">
-											@t.T("collection.track-price-change-description")
-										</span>
-									</div>
-								</label>
-								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
-									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
-									<div>
-										<span class="label-text text-sm font-medium block">
-											@t.T("collection.track-new-releases")
-										</span>
-										<span class="text-xs text-base-content/70 text-wrap">
-											@t.T("collection.track-new-releases-description")
-										</span>
-									</div>
-								</label>
-								<label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg p-3 hover:bg-base-200/30 transition-colors">
-									<input type="checkbox" name="track_prices" class="checkbox checkbox-primary checkbox-sm"/>
-									<div>
-										<span class="label-text text-sm font-medium block">
-											@t.T("collection.track-reviews")
-										</span>
-										<span class="text-xs text-base-content/70 text-wrap">
-											@t.T("collection.track-reviews-description")
-										</span>
-									</div>
-								</label>
-							</div>
-						</div>
-						<div class="form-control w-full mt-4">
-							<label class="label">
-								<span class="label-text font-medium">
-									@t.T("collection.search-terms")
-								</span>
-								<span class="label-text-alt text-sm">
-									@t.T("collection.search-terms-detail")
-								</span>
-							</label>
-							<div class="flex items-start gap-2">
-								<div class="flex-1">
-									<input
-										type="text"
-										id="search-term-input"
-										placeholder="E.g. 'Chainsaw Man', 'チェンソーマン', 'Tatsuki Fujimoto'"
-										class="input input-bordered w-full"
-										onkeydown="addSearchTermOnEnter(event)"
-									/>
-									// <label class="label">
-									// 	<span class="label-text-alt">Different versions of the title, author names, etc.</span>
-									// </label>
-								</div>
-								<button
-									type="button"
-									class="btn btn-outline"
-									onclick="addSearchTerm()"
-								>
-									@t.T("common.add")
-								</button>
-							</div>
-							<div id="search-terms-container" class="flex flex-wrap gap-2 mt-2">
-								<!-- Search terms will be inserted here dynamically -->
-							</div>
-							<input type="hidden" name="search_terms" id="search_terms_input" value=""/>
-						</div>
-					</div>
-					<div class="border-t border-base-300 pt-6 mt-6">
-						<div class="flex justify-end gap-3">
-							<button type="button" class="btn btn-outline" onclick="window.history.back();">
-								@t.T("collection.action.cancel")
-							</button>
-							<button type="submit" class="btn btn-primary">
-								@t.T("collection.action.create-collection")
-							</button>
-						</div>
-					</div>
-				</form>
+				@form.CreateCollection(v, err)
 			</div>
 		</div>
-		<script>
-            let searchTerms = [];
-
-            function addSearchTerm() {
-                const input = document.getElementById('search-term-input');
-                const term = input.value.trim();
-
-                if (term && !searchTerms.includes(term)) {
-                    searchTerms.push(term);
-                    updateSearchTermsDisplay();
-                    updateSearchTermsInput();
-                    input.value = '';
-                }
-            }
-
-            function addSearchTermOnEnter(event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    addSearchTerm();
-                }
-            }
-
-            function removeSearchTerm(term) {
-                searchTerms = searchTerms.filter(t => t !== term);
-                updateSearchTermsDisplay();
-                updateSearchTermsInput();
-            }
-
-            function updateSearchTermsDisplay() {
-                const container = document.getElementById('search-terms-container');
-                container.innerHTML = '';
-
-                searchTerms.forEach(term => {
-                    const badge = document.createElement('div');
-                    badge.className = 'badge badge-lg gap-2 py-4';
-                    badge.innerHTML = `
-                        ${term}
-                        <button type="button" onclick="removeSearchTerm('${term}')" class="btn btn-xs btn-ghost btn-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    `;
-                    container.appendChild(badge);
-                });
-            }
-
-            function updateSearchTermsInput() {
-                document.getElementById('search_terms_input').value = JSON.stringify(searchTerms);
-            }
-        </script>
 	}
 }
